@@ -124,10 +124,11 @@ class SelectFragment : Fragment() {
         val file = File(path)
         //TODO 修改文件类型
         val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val part = MultipartBody.Part.createFormData("map4", file.name, requestBody)
-        ReportApi.retrofitService.upLoadFiles(part)?.enqueue(object :Callback<String>{
+        val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
+        ReportApi.retrofitService.upLoadFiles(part,file.name)?.enqueue(object :Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Log.i("TAG", "状态码：" + response.body().toString())
+                Log.i("TAG","路径："+file.name)
             }
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.i("TAG", "错误信息："+t.toString() )

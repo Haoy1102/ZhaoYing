@@ -41,10 +41,11 @@ interface ReportApiService {
             Deferred<List<Report>>
 
     //适用于数据量少的情况
+    @POST("api/user/upload/{filename}")
     @Multipart
-    @POST("api/user/upload")
     fun upLoadFiles(
-        @Part file: MultipartBody.Part?
+        @Part file: MultipartBody.Part?,
+        @Path("filename") filename:String
     ): Call<String>?
 }
 
