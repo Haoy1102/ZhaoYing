@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.zhaoying_v13.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_selectFragment"
+            app:destination="@id/selectFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/navigation_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.zhaoying_v13.ui.plan.PlanFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_plan" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.zhaoying_v13.ui.myInfo.MyinfoFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_myinfo" >
+        <action
+            android:id="@+id/action_navigation_notifications_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/navigation_notifications" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectFragment"
+        android:name="com.example.zhaoying_v13.ui.home.SelectFragment"
+        android:label="选择上传视频"
+        tools:layout="@layout/select_fragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.zhaoying_v13.ui.myInfo.LoginFragment"
+        android:label="登录"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.zhaoying_v13.ui.myInfo.RegisterFragment"
+        android:label="注册"
+        tools:layout="@layout/register_fragment" />
+</navigation>
