@@ -1,22 +1,19 @@
-package com.example.zhaoying_v13.ui.myInfo
+package com.example.zhaoying_v13.ui.login
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import androidx.lifecycle.MutableLiveData
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.databinding.RegisterFragmentBinding
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.*
 
