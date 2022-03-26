@@ -43,7 +43,7 @@ class MyinfoFragment : Fragment() {
         })
 
         binding.ivAvatar.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_navigation_notifications_to_loginFragment)
+            Navigation.createNavigateOnClickListener(R.id.action_navigation_notifications_to_loginActivity)
         )
 
         return root

@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/InnovativeTeam/Backup/ZhaoYing/app/src/main/res/drawable/ic_edit_16.xml" value="0.14270833333333333" />
+        <entry key="..\:/InnovativeTeam/Backup/ZhaoYing/app/src/main/res/layout/activity_login.xml" value="0.15833333333333333" />
+        <entry key="..\:/InnovativeTeam/Backup/ZhaoYing/app/src/main/res/layout/fragment_myinfo.xml" value="0.1265625" />
+        <entry key="..\:/InnovativeTeam/Backup/ZhaoYing/app/src/main/res/layout/fragment_plan.xml" value="0.1265625" />
+        <entry key="..\:/InnovativeTeam/Backup/ZhaoYing/app/src/main/res/layout/login_fragment.xml" value="0.15833333333333333" />
         <entry key="..\:/InnovativeTeam/ZhaoYing-v1.3-backup/app/src/main/res/layout/fragment_home.xml" value="0.4" />
         <entry key="..\:/InnovativeTeam/ZhaoYing-v1.3-backup/app/src/main/res/layout/fragment_mine.xml" value="0.15756578947368421" />
         <entry key="..\:/InnovativeTeam/ZhaoYing-v1.3-backup/app/src/main/res/layout/fragment_myinfo.xml" value="0.15756578947368421" />

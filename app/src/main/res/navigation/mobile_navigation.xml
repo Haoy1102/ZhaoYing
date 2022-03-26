@@ -32,13 +32,8 @@
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_myinfo" >
         <action
-            android:id="@+id/action_navigation_notifications_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/navigation_notifications" />
+            android:id="@+id/action_navigation_notifications_to_loginActivity"
+            app:destination="@id/loginActivity" />
     </fragment>
 
     <fragment
@@ -65,4 +60,9 @@
         android:name="com.example.zhaoying_v13.ui.myInfo.RegisterFragment"
         android:label="注册"
         tools:layout="@layout/register_fragment" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.zhaoying_v13.ui.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>

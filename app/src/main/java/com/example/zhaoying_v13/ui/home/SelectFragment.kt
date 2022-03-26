@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
 import com.example.zhaoying_v13.network.ReportApi
 import com.example.zhaoying_v13.network.ReportApiService
@@ -33,7 +34,7 @@ class SelectFragment : Fragment() {
     private var _binding: SelectFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var imagePath:String
-
+    private var imageState=0
     companion object {
         fun newInstance() = SelectFragment()
     }
@@ -73,8 +74,14 @@ class SelectFragment : Fragment() {
         }
 
         binding.btnUploadFile.setOnClickListener {
-            Log.i("Tag", "上传按钮有效")
-            uploadFile(imagePath)
+            if (imageState==1){
+                Log.i("Tag", "上传按钮有效")
+                uploadFile(imagePath)
+            }
+            else{
+                Log.i("Tag", "上传按钮退出")
+                Toast.makeText(context,"选择文件后才可以上传噢",Toast.LENGTH_LONG).show()
+            }
         }
 
         return binding.root
@@ -110,6 +117,7 @@ class SelectFragment : Fragment() {
 //            binding.textField.
             binding.inputTextFiled.setText(imagePath)
             Log.i("TAG", imagePath)
+            imageState=1
 //            uploadFile(imagePath)
             c.close()
         }
