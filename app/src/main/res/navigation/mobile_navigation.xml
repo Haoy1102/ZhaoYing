@@ -11,13 +11,8 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_selectFragment"
-            app:destination="@id/selectFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/navigation_home" />
+            android:id="@+id/action_navigation_home_to_detectionActivity"
+            app:destination="@id/detectionActivity" />
     </fragment>
 
     <fragment
@@ -36,14 +31,14 @@
             app:destination="@id/loginActivity" />
     </fragment>
 
-    <fragment
-        android:id="@+id/selectFragment"
-        android:name="com.example.zhaoying_v13.ui.home.SelectFragment"
-        android:label="选择上传视频"
-        tools:layout="@layout/select_fragment" />
     <activity
         android:id="@+id/loginActivity"
         android:name="com.example.zhaoying_v13.ui.login.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <activity
+        android:id="@+id/detectionActivity"
+        android:name="com.example.zhaoying_v13.ui.detection.DetectionActivity"
+        android:label="activity_detection"
+        tools:layout="@layout/activity_detection" />
 </navigation>

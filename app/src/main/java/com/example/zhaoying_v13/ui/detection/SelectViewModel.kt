@@ -1,4 +1,4 @@
-package com.example.zhaoying_v13.ui.home
+package com.example.zhaoying_v13.ui.detection
 
 import androidx.lifecycle.ViewModel
 

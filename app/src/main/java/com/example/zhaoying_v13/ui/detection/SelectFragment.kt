@@ -1,7 +1,6 @@
-package com.example.zhaoying_v13.ui.home
+package com.example.zhaoying_v13.ui.detection
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import androidx.lifecycle.ViewModelProvider
@@ -15,14 +14,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
 import com.example.zhaoying_v13.network.ReportApi
-import com.example.zhaoying_v13.network.ReportApiService
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

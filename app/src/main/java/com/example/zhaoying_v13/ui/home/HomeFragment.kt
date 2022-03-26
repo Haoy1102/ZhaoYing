@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
 
         val imageButton1: ImageButton = binding.imageButton1
         imageButton1.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_selectFragment)
+            Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_detectionActivity)
         )
 //        val textView: TextView = binding.textHome
 //        homeViewModel.text.observe(viewLifecycleOwner, Observer {

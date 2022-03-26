@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detection_navigation"
+    app:startDestination="@id/selectFragment">
+    <fragment
+        android:id="@+id/selectFragment"
+        android:name="com.example.zhaoying_v13.ui.detection.SelectFragment"
+        android:label="select_fragment"
+        tools:layout="@layout/select_fragment" />
+</navigation>
