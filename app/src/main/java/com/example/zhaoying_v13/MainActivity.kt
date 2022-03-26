@@ -24,14 +24,15 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.loginFragment||destination.id ==R.id.registerFragment) {
-
-                binding.navView.visibility = View.GONE
-            } else {
-                binding.navView.visibility = View.VISIBLE
-            }
-        }
+        //y
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            if(destination.id == R.id.loginFragment||destination.id ==R.id.registerFragment) {
+//
+//                binding.navView.visibility = View.GONE
+//            } else {
+//                binding.navView.visibility = View.VISIBLE
+//            }
+//        }
 
         NavigationUI.setupActionBarWithNavController(this,navController)
         // Passing each menu ID as a set of Ids because each

@@ -41,25 +41,6 @@
         android:name="com.example.zhaoying_v13.ui.home.SelectFragment"
         android:label="选择上传视频"
         tools:layout="@layout/select_fragment" />
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.zhaoying_v13.ui.myInfo.LoginFragment"
-        android:label="登录"
-        tools:layout="@layout/login_fragment" >
-        <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.example.zhaoying_v13.ui.myInfo.RegisterFragment"
-        android:label="注册"
-        tools:layout="@layout/register_fragment" />
     <activity
         android:id="@+id/loginActivity"
         android:name="com.example.zhaoying_v13.ui.login.LoginActivity"
