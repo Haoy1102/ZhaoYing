@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.FragmentLoginBinding
@@ -45,10 +47,11 @@ class LoginFragment : Fragment() {
         loginViewModel = ViewModelProvider(this, viewModelFactory)
             .get(LoginViewModel::class.java)
 
-        val usernameEditText = binding.username
+        val usernameEditText = binding.phoneNumber
         val passwordEditText = binding.password
-        val loginButton = binding.login
+        val loginButton = binding.loginButton
         val loadingProgressBar = binding.loading
+        val registerText=binding.textRegister
 
         loginViewModel.loginFormState.observe(viewLifecycleOwner,
             Observer { loginFormState ->
@@ -111,6 +114,12 @@ class LoginFragment : Fragment() {
                 passwordEditText.text.toString()
             )
         }
+        //跳转注册界面
+        binding.textRegister.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_registerFragment)
+        )
+
+
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {

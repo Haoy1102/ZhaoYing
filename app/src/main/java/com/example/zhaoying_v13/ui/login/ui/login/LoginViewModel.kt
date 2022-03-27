@@ -28,18 +28,19 @@ class LoginViewModel(
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    fun login(username: String, password: String) {
+    fun login(phonenumber: String, password: String) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        //登陆操作
+        val result = loginRepository.login(phonenumber, password)
         if (result is Result.Success) {
             //结果成功
             _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+                LoginResult(success = LoggedInUserView(result.data.displayName,result.data.userId))
 
 //            录入数据库
             viewModelScope.launch(Dispatchers.IO) {
                 val user=UserInfo(result.data.userId,"15603781240",
-                    "123456","now")
+                    "123456")
                 database.insert(user)
                 Log.i("Database", result.data.userId + result.data.displayName)
                 Log.i("Database查询:", database.getCurrent().toString())
@@ -53,8 +54,6 @@ class LoginViewModel(
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
         }

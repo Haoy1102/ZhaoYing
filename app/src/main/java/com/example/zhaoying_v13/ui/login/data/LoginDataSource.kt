@@ -10,18 +10,17 @@ import java.util.*
  */
 class LoginDataSource {
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(phonenumber: String, password: String): Result<LoggedInUser> {
         try {
-            // TODO: handle loggedInUser authentication
-                if (username=="admin"&&password=="123456"){
-                    val testUser = LoggedInUser(UUID.randomUUID().toString(), "Haoy")
+            // TODO: handle loggedInUser authentication 发送网络请求
+                //UUID改为返回的userID
+                if (phonenumber=="15603781240"&&password=="123456"){
+                    val testUser = LoggedInUser(UUID.randomUUID().toString(), 200)
                     return Result.Success(testUser)
                 }
 
-
-
             //Default设置
-            val fakeUser = LoggedInUser(UUID.randomUUID().toString(), "Jane Doe")
+            val fakeUser = LoggedInUser(UUID.randomUUID().toString(), 200)
             return Result.Success(fakeUser)
 
         } catch (e: Throwable) {
