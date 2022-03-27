@@ -8,7 +8,7 @@ import java.util.*
 @Entity(tableName="local_user_info_table")
 data class UserInfo (
     @PrimaryKey
-    var usrID:Long=0L,
+    var usrID:String,
 
     @ColumnInfo(name="phoneNumber")
     val phoneNumber:String,
