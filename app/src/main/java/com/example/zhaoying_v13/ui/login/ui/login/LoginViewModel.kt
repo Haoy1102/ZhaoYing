@@ -38,9 +38,9 @@ class LoginViewModel(
                 LoginResult(success = LoggedInUserView(result.data.displayName,result.data.userId))
 
 //            录入数据库
+
             viewModelScope.launch(Dispatchers.IO) {
-                val user=UserInfo(result.data.userId,"15603781240",
-                    "123456")
+                val user=UserInfo(result.data.userId,phonenumber, password)
                 database.insert(user)
                 Log.i("Database", result.data.userId + result.data.displayName)
                 Log.i("Database查询:", database.getCurrent().toString())

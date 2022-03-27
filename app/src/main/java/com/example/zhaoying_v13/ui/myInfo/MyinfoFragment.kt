@@ -33,14 +33,15 @@ class MyinfoFragment : Fragment() {
         _binding = FragmentMyinfoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        myinfoViewModel.report.observe(viewLifecycleOwner, Observer {
-            val imgUri = it.imgSrcUrl.toUri().buildUpon().scheme("https").build()
-            Glide.with(binding.imageView.context)
-                .load(imgUri)
-                .into(binding.imageView)
-            binding.imageView.setImageURI(imgUri)
-            binding.textNotifications.text=it.imgSrcUrl
-        })
+        //Glide加载图片
+//        myinfoViewModel.report.observe(viewLifecycleOwner, Observer {
+//            val imgUri = it.imgSrcUrl.toUri().buildUpon().scheme("https").build()
+//            Glide.with(binding.imageView.context)
+//                .load(imgUri)
+//                .into(binding.imageView)
+//            binding.imageView.setImageURI(imgUri)
+//            binding.textNotifications.text=it.imgSrcUrl
+//        })
 
         binding.ivAvatar.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.action_navigation_notifications_to_loginActivity)

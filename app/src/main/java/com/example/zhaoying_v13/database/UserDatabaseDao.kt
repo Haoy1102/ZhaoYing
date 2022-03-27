@@ -22,4 +22,6 @@ public interface UserDatabaseDao {
     @Query("SELECT * FROM local_user_info_table ORDER BY lastLoginTime DESC LIMIT 1")
     fun getCurrent(): UserInfo?
 
+    @Query("SELECT * FROM local_user_info_table WHERE currentLoginState=1")
+    fun getCurrentLoginState():UserInfo?
 }

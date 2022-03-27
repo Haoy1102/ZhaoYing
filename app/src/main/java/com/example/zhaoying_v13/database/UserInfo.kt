@@ -17,5 +17,8 @@ data class UserInfo (
     val password:String,
 
     @ColumnInfo(name="lastLoginTime")
-    val lastLoginTime: Long=System.currentTimeMillis()
+    val lastLoginTime: Long=System.currentTimeMillis(),
+
+    @ColumnInfo(name="currentLoginState")
+    val currentLoginState:Int=1
         )
