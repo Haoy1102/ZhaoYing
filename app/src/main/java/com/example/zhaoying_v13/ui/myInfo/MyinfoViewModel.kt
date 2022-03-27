@@ -1,8 +1,12 @@
 package com.example.zhaoying_v13.ui.myInfo
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.zhaoying_v13.database.UserDatabaseDao
+import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.network.Report
 import com.example.zhaoying_v13.network.ReportApi
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class MyinfoViewModel : ViewModel() {
+class MyinfoViewModel(
+    val database: UserDatabaseDao,
+    application: Application
+) : ViewModel() {
 
     private val _status = MutableLiveData<String>()
     val status: LiveData<String>
@@ -21,11 +28,29 @@ class MyinfoViewModel : ViewModel() {
     val report: LiveData<Report>
         get() = _report
 
+    private lateinit var currentUser: UserInfo
+    private var currentUserNum: Int=0
+
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
 //        getReports()
+    }
+
+    fun getCurrentLoginState(): UserInfo? {
+        viewModelScope.launch(Dispatchers.IO) {
+            currentUserNum = database.getCurrentLoginUserNum()
+            if (currentUserNum > 0) {
+                currentUser = database.getCurrentLoginUserInfo()!!
+                return@launch
+            }
+        }
+        //当前有用户则返回
+        if (currentUserNum > 0)
+            return currentUser
+        else    //没有用户返回null
+            return null
     }
 
     private fun getReports() {
@@ -41,6 +66,7 @@ class MyinfoViewModel : ViewModel() {
             }
         }
     }
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()

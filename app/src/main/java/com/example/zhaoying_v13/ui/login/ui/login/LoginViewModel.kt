@@ -40,7 +40,7 @@ class LoginViewModel(
 //            录入数据库
 
             viewModelScope.launch(Dispatchers.IO) {
-                val user=UserInfo(result.data.userId,phonenumber, password)
+                val user=UserInfo(result.data.userId,phonenumber, password,result.data.displayName)
                 database.insert(user)
                 Log.i("Database", result.data.userId + result.data.displayName)
                 Log.i("Database查询:", database.getCurrent().toString())

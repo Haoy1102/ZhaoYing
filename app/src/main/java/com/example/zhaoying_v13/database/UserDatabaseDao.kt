@@ -22,6 +22,11 @@ public interface UserDatabaseDao {
     @Query("SELECT * FROM local_user_info_table ORDER BY lastLoginTime DESC LIMIT 1")
     fun getCurrent(): UserInfo?
 
-    @Query("SELECT * FROM local_user_info_table WHERE currentLoginState=1")
-    fun getCurrentLoginState():UserInfo?
+    //得到登陆状态为1的一个人
+    @Query("SELECT * FROM local_user_info_table WHERE currentLoginState=1 ORDER BY lastLoginTime DESC LIMIT 1")
+    fun getCurrentLoginUserInfo():UserInfo?
+
+    //得到登陆状态为1的个数
+    @Query("select count() from local_user_info_table where currentLoginState=1")
+    fun getCurrentLoginUserNum():Int
 }

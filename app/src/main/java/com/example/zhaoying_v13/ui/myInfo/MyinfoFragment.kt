@@ -11,12 +11,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.zhaoying_v13.R
+import com.example.zhaoying_v13.database.UserDatabase
+import com.example.zhaoying_v13.database.UserDatabaseDao
+import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.databinding.FragmentMyinfoBinding
+import com.example.zhaoying_v13.ui.login.ui.login.LoginViewModel
 
 class MyinfoFragment : Fragment() {
 
     private lateinit var myinfoViewModel: MyinfoViewModel
     private var _binding: FragmentMyinfoBinding? = null
+
+    private lateinit var currentUser:UserInfo
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -27,8 +33,7 @@ class MyinfoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        myinfoViewModel =
-            ViewModelProvider(this).get(MyinfoViewModel::class.java)
+
 
         _binding = FragmentMyinfoBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -43,11 +48,34 @@ class MyinfoFragment : Fragment() {
 //            binding.textNotifications.text=it.imgSrcUrl
 //        })
 
+        //设置
+
+
         binding.ivAvatar.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.action_navigation_notifications_to_loginActivity)
         )
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val application = requireNotNull(this.activity).application
+        val dataSource = UserDatabase.getInstance(application).userDatabaseDao
+        val viewModelFactory = MyinfoViewModelFactory(dataSource, application)
+        myinfoViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(MyinfoViewModel::class.java)
+
+        //设置图标下的文字
+        setLoginTipsOrUserName()
+    }
+
+    fun setLoginTipsOrUserName(){
+        if (myinfoViewModel.getCurrentLoginState()!=null){
+            currentUser=myinfoViewModel.getCurrentLoginState()!!
+            binding.tvLoginTipsOrUserName.setText(currentUser.displayName)
+        }
     }
 
     override fun onDestroyView() {
