@@ -46,11 +46,6 @@ class RegisterFragment : Fragment() {
         selectDate()
 
 
-
-
-
-
-
         return binding.root
     }
 

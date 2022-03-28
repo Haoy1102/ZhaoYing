@@ -2,6 +2,7 @@ package com.example.zhaoying_v13.network
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
@@ -39,6 +40,13 @@ interface ReportApiService {
     @GET("realestate")
     fun getProperties():
             Deferred<List<Report>>
+
+    @FormUrlEncoded
+    @POST("api/user/login")
+    fun userLogin(
+        @Field("phonenumber") phonenumber:String,
+        @Field("passwd") passwd:String
+        ):Call<String>
 
     //适用于数据量少的情况
     @POST("api/user/upload/{filename}")

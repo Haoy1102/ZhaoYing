@@ -69,10 +69,7 @@ class MyinfoFragment : Fragment() {
         myinfoViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MyinfoViewModel::class.java)
 
-        //设置图标下的文字
-        if (database.isOpen){
-            Log.i("Database","Opening")
-        }
+        //设置图标下的文字保存登陆状态
         setLoginTipsOrUserName()
     }
 
