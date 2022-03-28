@@ -41,11 +41,12 @@ interface ReportApiService {
     fun getProperties():
             Deferred<List<Report>>
 
-    @FormUrlEncoded
+
     @POST("api/user/login")
+    @FormUrlEncoded
     fun userLogin(
-        @Field("phonenumber") phonenumber:String,
-        @Field("passwd") passwd:String
+        @Field("phonenumber")phonenumber:String,
+        @Field("password")password:String
         ):Call<String>
 
     //适用于数据量少的情况
