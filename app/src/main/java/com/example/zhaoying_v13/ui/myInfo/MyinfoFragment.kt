@@ -1,6 +1,7 @@
 package com.example.zhaoying_v13.ui.myInfo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ class MyinfoFragment : Fragment() {
     private lateinit var myinfoViewModel: MyinfoViewModel
     private var _binding: FragmentMyinfoBinding? = null
 
-    private lateinit var currentUser:UserInfo
+    //private lateinit var currentUser:UserInfo
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -62,20 +63,31 @@ class MyinfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val application = requireNotNull(this.activity).application
-        val dataSource = UserDatabase.getInstance(application).userDatabaseDao
+        val database=UserDatabase.getInstance(application)
+        val dataSource = database.userDatabaseDao
         val viewModelFactory = MyinfoViewModelFactory(dataSource, application)
         myinfoViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MyinfoViewModel::class.java)
 
         //设置图标下的文字
+        if (database.isOpen){
+            Log.i("Database","Opening")
+        }
         setLoginTipsOrUserName()
     }
 
+
     fun setLoginTipsOrUserName(){
-        if (myinfoViewModel.getCurrentLoginState()!=null){
-            currentUser=myinfoViewModel.getCurrentLoginState()!!
-            binding.tvLoginTipsOrUserName.setText(currentUser.displayName)
-        }
+        Log.i("Database","1:setLoginTipsOrUserName()执行")
+        myinfoViewModel.currentUser.observe(viewLifecycleOwner,
+            Observer { it->
+                if (it==null)
+                    binding.tvLoginTipsOrUserName.setText("点击头像可以进行登录噢！")
+                else{
+                    binding.tvLoginTipsOrUserName.setText(it.displayName)
+                }
+
+        })
     }
 
     override fun onDestroyView() {

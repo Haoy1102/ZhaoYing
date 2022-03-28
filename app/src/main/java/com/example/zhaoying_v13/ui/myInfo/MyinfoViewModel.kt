@@ -1,8 +1,10 @@
 package com.example.zhaoying_v13.ui.myInfo
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.zhaoying_v13.database.UserDatabaseDao
@@ -28,30 +30,65 @@ class MyinfoViewModel(
     val report: LiveData<Report>
         get() = _report
 
-    private lateinit var currentUser: UserInfo
-    private var currentUserNum: Int=0
+
+    private val _currentUser = MutableLiveData<UserInfo?>()
+    val currentUser: LiveData<UserInfo?> = _currentUser
+
+//    private val allLoginUser=database.getAllUser()
+
+    //private var currentUserNum = database.getCurrentLoginUserNum()
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-//        getReports()
+       //getReports()
+//        getCurrentUser()
+        initUserState()
     }
 
-    fun getCurrentLoginState(): UserInfo? {
-        viewModelScope.launch(Dispatchers.IO) {
-            currentUserNum = database.getCurrentLoginUserNum()
-            if (currentUserNum > 0) {
-                currentUser = database.getCurrentLoginUserInfo()!!
-                return@launch
-            }
+    fun initUserState(){
+        viewModelScope.launch {
+            val userList=getAllUser()
+            Log.i("Database","AllUser:"+userList[0].toString())
+            _currentUser.value=userList[0]
         }
-        //当前有用户则返回
-        if (currentUserNum > 0)
-            return currentUser
-        else    //没有用户返回null
-            return null
     }
+
+    suspend fun getAllUser():List<UserInfo?>{
+        val userList=database.getAllUser()
+        return userList
+    }
+
+//     private fun getCurrentUser() {
+//         val loginedUerList=allLoginUser.value
+//         Log.i("Database", "2:运行到ViewModel")
+//             _currentUser.value= loginedUerList?.get(0)
+//         Log.i("Database", "3:getCurrentUser()执行结果："+_currentUser.value.toString())
+
+         //Log.i("Database", ":getCurren()执行结果："+database.getCurrent().value.toString())
+
+
+//         Thread {
+//             _currentUser.postValue(database.getCurrentLoginUserInfo())
+//             Log.i("Database", "3:curre ntUser:"+currentUser.value.toString())
+//         }.start()
+//        viewModelScope.launch {
+//            //val currentUserNum = database.getCurrentLoginUserNum()
+//
+//            //Log.i("Database", "2:getCurrentLoginUserNum():" + currentUserNum)
+//            //if (currentUserNum > 0) {
+//                val currentUser= database.getCurrentLoginUserInfo()
+//
+//            Log.i("Database", "3:currentUser:"+currentUser.value.toString())
+//                //Log.i("Database", "3:getCurrentLoginUserInfo():" + currentUser.toString())
+//                return@launch
+//            //}
+//        }
+//    }
+
+
+
 
     private fun getReports() {
         coroutineScope.launch {

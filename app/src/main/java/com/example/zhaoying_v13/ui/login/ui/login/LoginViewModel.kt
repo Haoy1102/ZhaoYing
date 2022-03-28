@@ -38,18 +38,25 @@ class LoginViewModel(
                 LoginResult(success = LoggedInUserView(result.data.displayName,result.data.userId))
 
 //            录入数据库
-
             viewModelScope.launch(Dispatchers.IO) {
                 val user=UserInfo(result.data.userId,phonenumber, password,result.data.displayName)
                 database.insert(user)
                 Log.i("Database", result.data.userId + result.data.displayName)
-                Log.i("Database查询:", database.getCurrent().toString())
+                Log.i("Database查询1:", database.getCurrent().toString())
+                val userList:List<UserInfo?>?
+//                userList=database.getAllUser().value
+//                if (userList != null) {
+//                    for (user in userList)
+//                        Log.i("Database全部用户:",user.toString() )
+//                }
             }
 
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
         }
     }
+
+
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
