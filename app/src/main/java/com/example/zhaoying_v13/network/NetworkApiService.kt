@@ -29,7 +29,7 @@ interface UserLoginApiService {
     fun userLogin(
         @Part("phone_number")phonenumber:RequestBody,
         @Part("password")password:RequestBody
-    ):Call<String>
+    ):Call<ResponseBody>
 }
 
 object FormdataApi {

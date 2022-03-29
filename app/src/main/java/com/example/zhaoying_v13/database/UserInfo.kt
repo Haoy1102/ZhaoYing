@@ -10,12 +10,6 @@ data class UserInfo (
     @PrimaryKey
     var usrID:String,
 
-    @ColumnInfo(name="phoneNumber")
-    val phoneNumber:String,
-
-    @ColumnInfo(name="password")
-    val password:String,
-
     @ColumnInfo(name="displayName")
     val displayName:String,
 

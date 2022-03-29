@@ -15,8 +15,8 @@ public interface UserDatabaseDao {
     @Update
     fun update(user:UserInfo)
 
-    @Query("SELECT * from local_user_info_table WHERE usrID = :key")
-    fun get(key: Long): UserInfo?
+    @Query("SELECT * from local_user_info_table WHERE usrID = :key ORDER BY lastLoginTime DESC LIMIT 1")
+    fun getUserByID(key: String): UserInfo?
 
     @Query("DELETE FROM local_user_info_table")
     fun clear()
@@ -34,4 +34,10 @@ public interface UserDatabaseDao {
     //得到登陆状态为1的个数
     @Query("select count() from local_user_info_table where currentLoginState=1")
     fun getCurrentLoginUserNum(): Int
+
+    @Query("update local_user_info_table set currentLoginState=0 where usrId!=:key")
+    fun setOtherLogin0(key: String)
+
+    @Query("update local_user_info_table set currentLoginState=1 where usrId=:key")
+    fun setCurrentLogin1(key: String)
 }

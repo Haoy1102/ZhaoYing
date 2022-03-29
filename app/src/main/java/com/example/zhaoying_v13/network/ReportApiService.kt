@@ -12,6 +12,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 
 import retrofit2.http.Multipart
@@ -44,7 +46,8 @@ interface ReportApiService {
     fun userLogin(
         @Part("phone_number")phonenumber:RequestBody,
         @Part("password")password:RequestBody
-        ):Call<String>
+        ):Call<UserLoginResponse>
+
 
     //适用于数据量少的情况
     @POST("api/user/upload/{filename}")

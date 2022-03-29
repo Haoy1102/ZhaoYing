@@ -32,26 +32,39 @@ class LoginViewModel(
         // can be launched in a separate asynchronous job
         //登陆操作
         val result = loginRepository.login(phonenumber, password)
-        if (result is Result.Success) {
-            //结果成功
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(result.data.displayName,result.data.userId))
 
-//            录入数据库
-            viewModelScope.launch(Dispatchers.IO) {
-                val user=UserInfo(result.data.userId,phonenumber, password,result.data.displayName)
-                database.insert(user)
-                Log.i("Database", result.data.userId + result.data.displayName)
-                Log.i("Database查询1:", database.getCurrent().toString())
-                val userList:List<UserInfo?>?
+        //结果成功
+        if (result is Result.Success) {
+            _loginResult.value =
+                LoginResult(success = LoggedInUserView(result.data.displayName,result.data.userId!!))
+
+            //用户当前状态录入数据库
+            if (loginRepository.isLoggedIn==true){
+                viewModelScope.launch(Dispatchers.IO) {
+                    val key= loginRepository.user!!.userId!!
+                    if (database.getUserByID(key)==null){
+                        val user=UserInfo(key,result.data.displayName)
+                        database.insert(user)
+                    }
+                    else{//本地保存有用户的信息 更新状态即可
+                        Log.i("Database", "设置用户登陆状态")
+                        database.setOtherLogin0(key)
+                        database.setCurrentLogin1(key)
+                        Log.i("Database", "用户登陆状态设置成功")
+                    }
+//                    Log.i("Database查询1:", database.getCurrent().toString())
+//                    val userList:List<UserInfo?>?
 //                userList=database.getAllUser().value
 //                if (userList != null) {
 //                    for (user in userList)
 //                        Log.i("Database全部用户:",user.toString() )
 //                }
+                }
             }
 
+
         } else {
+            //登陆界面显示提示
             _loginResult.value = LoginResult(error = R.string.login_failed)
             //Log.i("UserLogin",result.toString())
         }

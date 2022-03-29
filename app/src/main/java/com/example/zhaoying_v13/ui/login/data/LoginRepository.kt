@@ -31,6 +31,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
         // handle login
         val result = dataSource.login(phonenumber, password)
 
+        //当前实体保存登录成功的用户状态
         if (result is Result.Success) {
             setLoggedInUser(result.data)
         }
