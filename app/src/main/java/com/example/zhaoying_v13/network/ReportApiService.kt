@@ -9,13 +9,10 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import okhttp3.RequestBody
 import retrofit2.http.*
-import java.io.File
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
-import okhttp3.ResponseBody
 
 import retrofit2.http.Multipart
 
@@ -43,16 +40,17 @@ interface ReportApiService {
 
 
     @POST("api/user/login")
-    @FormUrlEncoded
+    @Multipart
     fun userLogin(
-        @Field("phonenumber")phonenumber:String,
-        @Field("password")password:String
+        @Part("phone_number")phonenumber:RequestBody,
+        @Part("password")password:RequestBody
         ):Call<String>
 
     //适用于数据量少的情况
     @POST("api/user/upload/{filename}")
     @Multipart
     fun upLoadFiles(
+        //@Part("phonenumber") phonenumber:RequestBody,
         @Part file: MultipartBody.Part?,
         @Path("filename") filename:String
     ): Call<String>?

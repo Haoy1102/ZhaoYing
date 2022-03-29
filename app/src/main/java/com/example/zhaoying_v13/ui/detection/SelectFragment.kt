@@ -115,7 +115,6 @@ class SelectFragment : Fragment() {
             binding.inputTextFiled.setText(imagePath)
             Log.i("TAG", imagePath)
             imageState=1
-//            uploadFile(imagePath)
             c.close()
         }
     }
@@ -128,6 +127,7 @@ class SelectFragment : Fragment() {
     private fun uploadFile(path: String) {
         val file = File(path)
         //TODO 修改文件类型
+        //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
         val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
         ReportApi.retrofitService.upLoadFiles(part,file.name)?.enqueue(object :Callback<String>{

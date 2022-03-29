@@ -10,34 +10,29 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
-private const val BASE_URL = "http://110.40.185.43:9000/"
-
-
-private val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
-
+private const val BASE_URL = "http://110.40.185.43:8000/"
 
 
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+    .addConverterFactory(GsonConverterFactory.create())
     .baseUrl(BASE_URL)
     .build()
 
 interface UserLoginApiService {
     @POST("api/user/login")
-    fun postUserLogin(@Body requestBody: RequestBody):
-            Call<State>
+    @Multipart
+    fun userLogin(
+        @Part("phone_number")phonenumber:RequestBody,
+        @Part("password")password:RequestBody
+    ):Call<String>
 }
 
-object UserLoginApi {
+object FormdataApi {
     val retrofitService : UserLoginApiService by lazy {
         retrofit.create(UserLoginApiService::class.java)
     }

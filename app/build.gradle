@@ -75,6 +75,7 @@ dependencies {
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:2.4.0-rc01")
 
+    implementation "com.squareup.retrofit2:converter-gson:$version_retrofit"
     implementation "com.squareup.retrofit2:retrofit: $version_retrofit"
     implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
     implementation "com.squareup.moshi:moshi:$version_moshi"

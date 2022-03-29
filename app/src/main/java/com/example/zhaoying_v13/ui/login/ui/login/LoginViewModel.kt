@@ -53,6 +53,7 @@ class LoginViewModel(
 
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
+            //Log.i("UserLogin",result.toString())
         }
     }
 

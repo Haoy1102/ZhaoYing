@@ -44,7 +44,7 @@ class MyinfoViewModel(
     init {
        //getReports()
 //        getCurrentUser()
-        initUserState()
+        //initUserState()
     }
 
     fun initUserState(){

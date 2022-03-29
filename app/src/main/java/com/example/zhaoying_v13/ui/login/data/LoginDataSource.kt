@@ -2,6 +2,7 @@ package com.example.zhaoying_v13.ui.login.data
 
 import android.util.Log
 import com.example.zhaoying_v13.database.UserDatabase
+import com.example.zhaoying_v13.network.FormdataApi
 import com.example.zhaoying_v13.network.ReportApi
 import com.example.zhaoying_v13.network.ReportApiService
 import com.example.zhaoying_v13.ui.login.data.model.LoggedInUser
@@ -25,12 +26,12 @@ class LoginDataSource {
     fun login(phonenumber: String, password: String): Result<LoggedInUser> {
         try {
             // TODO: handle loggedInUser authentication 发送网络请求
-//            val phonenumberBody: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), phonenumber)
-//
-//            val passwordBody: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), password)
+            val phonenumberBody: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), phonenumber)
+            val passwordBody: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"),password)
+
 //            Log.i("TAGLogin",phonenumberBody.toString())
 //            Log.i("TAGLogin",passwordBody.toString())
-            ReportApi.retrofitService.userLogin(phonenumber,password)
+            ReportApi.retrofitService.userLogin(phonenumberBody,passwordBody)
                 .enqueue(object : Callback<String>{
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         Log.i("TAGLogin","success:"+response.toString())
@@ -53,6 +54,7 @@ class LoginDataSource {
             return Result.Success(fakeUser)
 
         } catch (e: Throwable) {
+            Log.i("UserLogin",e.message.toString())
             return Result.Error(IOException("Error logging in", e))
         }
     }
