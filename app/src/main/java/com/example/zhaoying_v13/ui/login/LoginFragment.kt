@@ -2,23 +2,18 @@ package com.example.zhaoying_v13.ui.login
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.FragmentLoginBinding
-import com.example.zhaoying_v13.ui.login.data.model.LoggedInUser
-import com.example.zhaoying_v13.ui.login.login.LoggedInUserView
+import com.example.zhaoying_v13.ui.login.model.LoggedInUser
 
 class LoginFragment : Fragment() {
 
@@ -55,19 +50,19 @@ class LoginFragment : Fragment() {
         val loadingProgressBar = binding.loading
         val registerText=binding.textRegister
 
-        loginViewModel.loginFormState.observe(viewLifecycleOwner,
-            Observer { loginFormState ->
-                if (loginFormState == null) {
-                    return@Observer
-                }
-                loginButton.isEnabled = loginFormState.isDataValid
-                loginFormState.usernameError?.let {
-                    usernameEditText.error = getString(it)
-                }
-                loginFormState.passwordError?.let {
-                    passwordEditText.error = getString(it)
-                }
-            })
+//        loginViewModel.loginFormState.observe(viewLifecycleOwner,
+//            Observer { loginFormState ->
+//                if (loginFormState == null) {
+//                    return@Observer
+//                }
+//                loginButton.isEnabled = loginFormState.isDataValid
+//                loginFormState.usernameError?.let {
+//                    usernameEditText.error = getString(it)
+//                }
+//                loginFormState.passwordError?.let {
+//                    passwordEditText.error = getString(it)
+//                }
+//            })
 
         loginViewModel.loggedInUser.observe(viewLifecycleOwner,
             Observer { loggedInUser ->
@@ -84,33 +79,32 @@ class LoginFragment : Fragment() {
                     showLoginFailed("账户不存在")
             })
 
-        val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                loginViewModel.loginDataChanged(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-        }
-        usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-            false
-        }
+//        val afterTextChangedListener = object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+//                // ignore
+//            }
+//
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//                // ignore
+//            }
+//            override fun afterTextChanged(s: Editable) {
+//                loginViewModel.loginDataChanged(
+//                    usernameEditText.text.toString(),
+//                    passwordEditText.text.toString()
+//                )
+//            }
+//        }
+//        usernameEditText.addTextChangedListener(afterTextChangedListener)
+//        passwordEditText.addTextChangedListener(afterTextChangedListener)
+//        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                loginViewModel.login(
+//                    usernameEditText.text.toString(),
+//                    passwordEditText.text.toString()
+//                )
+//            }
+//            false
+//        }
 
         loginButton.setOnClickListener {
             //loadingBar显示

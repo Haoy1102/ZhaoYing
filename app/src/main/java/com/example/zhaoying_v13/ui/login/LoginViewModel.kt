@@ -7,18 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import androidx.lifecycle.viewModelScope
-import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.network.ReportApi
 import com.example.zhaoying_v13.network.UserLoginResponse
-import com.example.zhaoying_v13.ui.login.data.LoginRepository
-import com.example.zhaoying_v13.ui.login.data.Result
-import com.example.zhaoying_v13.ui.login.data.model.LoggedInUser
-import com.example.zhaoying_v13.ui.login.login.LoggedInUserView
-import com.example.zhaoying_v13.ui.login.login.LoginFormState
-import com.example.zhaoying_v13.ui.login.login.LoginResult
-import kotlinx.coroutines.Dispatchers
+import com.example.zhaoying_v13.ui.login.model.LoggedInUser
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -31,14 +24,14 @@ class LoginViewModel(
     application: Application
 ) : ViewModel() {
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+//    private val _loginForm = MutableLiveData<LoginFormState>()
+//    val loginFormState: LiveData<LoginFormState> = _loginForm
 
     private val _loggedInUser = MutableLiveData<LoggedInUser>()
     val loggedInUser: LiveData<LoggedInUser> = _loggedInUser
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+//    private val _loginResult = MutableLiveData<LoginResult>()
+//    val loginResult: LiveData<LoginResult> = _loginResult
 
     fun login(phonenumber: String, password: String) {
         // can be launched in a separate asynchronous job
@@ -134,13 +127,13 @@ class LoginViewModel(
             return database.getUserByID(key)
         }
 
-        fun loginDataChanged(username: String, password: String) {
-            if (!isUserNameValid(username)) {
-                _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-            } else {
-                _loginForm.value = LoginFormState(isDataValid = true)
-            }
-        }
+//        fun loginDataChanged(username: String, password: String) {
+//            if (!isUserNameValid(username)) {
+//                _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
+//            } else {
+//                _loginForm.value = LoginFormState(isDataValid = true)
+//            }
+//        }
 
         // A placeholder username validation check
         private fun isUserNameValid(username: String): Boolean {
