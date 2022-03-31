@@ -5,18 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.bumptech.glide.Glide
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
-import com.example.zhaoying_v13.database.UserDatabaseDao
-import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.databinding.FragmentMyinfoBinding
-import com.example.zhaoying_v13.ui.login.ui.login.LoginViewModel
 
 class MyinfoFragment : Fragment() {
 

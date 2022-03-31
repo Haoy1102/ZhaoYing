@@ -27,17 +27,17 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(phonenumber: String, password: String): Result<LoggedInUser> {
-        // handle login
-        val result = dataSource.login(phonenumber, password)
-
-        //当前实体保存登录成功的用户状态
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
-        }
-
-        return result
-    }
+//    fun login(phonenumber: String, password: String): Result<LoggedInUser> {
+//        // handle login
+//        val result = dataSource.login(phonenumber, password)
+//
+//        //当前实体保存登录成功的用户状态
+//        if (result is Result.Success) {
+//            setLoggedInUser(result.data)
+//        }
+//
+//        return result
+//    }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
         this.user = loggedInUser

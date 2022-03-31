@@ -1,9 +1,8 @@
-package com.example.zhaoying_v13.ui.login.ui.login
+package com.example.zhaoying_v13.ui.login
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.ui.login.data.LoginDataSource
 import com.example.zhaoying_v13.ui.login.data.LoginRepository
@@ -21,9 +20,6 @@ class LoginViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(
-                loginRepository = LoginRepository(
-                    dataSource = LoginDataSource()
-                ),
                 dataSource, application
             ) as T
         }

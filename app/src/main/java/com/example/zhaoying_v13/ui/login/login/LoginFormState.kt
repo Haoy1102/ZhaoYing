@@ -1,4 +1,4 @@
-package com.example.zhaoying_v13.ui.login.ui.login
+package com.example.zhaoying_v13.ui.login.login
 
 /**
  * Data validation state of the login form.

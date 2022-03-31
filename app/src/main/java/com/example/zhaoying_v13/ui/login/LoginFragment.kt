@@ -1,4 +1,4 @@
-package com.example.zhaoying_v13.ui.login.ui.login
+package com.example.zhaoying_v13.ui.login
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +17,8 @@ import androidx.navigation.Navigation
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.FragmentLoginBinding
+import com.example.zhaoying_v13.ui.login.data.model.LoggedInUser
+import com.example.zhaoying_v13.ui.login.login.LoggedInUserView
 
 class LoginFragment : Fragment() {
 
@@ -67,16 +69,19 @@ class LoginFragment : Fragment() {
                 }
             })
 
-        loginViewModel.loginResult.observe(viewLifecycleOwner,
-            Observer { loginResult ->
-                loginResult ?: return@Observer
+        loginViewModel.loggedInUser.observe(viewLifecycleOwner,
+            Observer { loggedInUser ->
+                loggedInUser ?: return@Observer
                 loadingProgressBar.visibility = View.GONE
-                loginResult.error?.let {
-                    showLoginFailed(it)
+                if (loggedInUser.status=="200"){
+                    Log.i("SLEF_TAG","loggedInUser.status==\"200\"")
+                    updateUiWithUser(loggedInUser)
+                    updateDatabaseWithUser(loggedInUser)
                 }
-                loginResult.success?.let {
-                    updateUiWithUser(it)
-                }
+                if (loggedInUser.status=="B404")
+                    showLoginFailed("密码不正确")
+                if (loggedInUser.status=="A404")
+                    showLoginFailed("账户不存在")
             })
 
         val afterTextChangedListener = object : TextWatcher {
@@ -108,6 +113,7 @@ class LoginFragment : Fragment() {
         }
 
         loginButton.setOnClickListener {
+            //loadingBar显示
             loadingProgressBar.visibility = View.VISIBLE
             loginViewModel.login(
                 usernameEditText.text.toString(),
@@ -122,14 +128,18 @@ class LoginFragment : Fragment() {
 
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
+    private fun updateUiWithUser(loggedInUser: LoggedInUser) {
+        val welcome = getString(R.string.welcome) + loggedInUser.displayName
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
+    private fun updateDatabaseWithUser(loggedInUser: LoggedInUser){
+        loginViewModel.updateDatabaseWithUser(loggedInUser)
+    }
+
+    private fun showLoginFailed(errorString: String) {
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
     }

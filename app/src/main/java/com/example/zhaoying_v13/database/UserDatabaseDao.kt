@@ -10,13 +10,13 @@ import kotlinx.coroutines.Deferred
 @Dao
 public interface UserDatabaseDao {
     @Insert
-    fun insert(user:UserInfo)
+    suspend fun insert(user:UserInfo)
 
     @Update
     fun update(user:UserInfo)
 
     @Query("SELECT * from local_user_info_table WHERE usrID = :key ORDER BY lastLoginTime DESC LIMIT 1")
-    fun getUserByID(key: String): UserInfo?
+    suspend fun getUserByID(key: String): UserInfo?
 
     @Query("DELETE FROM local_user_info_table")
     fun clear()
@@ -36,8 +36,8 @@ public interface UserDatabaseDao {
     fun getCurrentLoginUserNum(): Int
 
     @Query("update local_user_info_table set currentLoginState=0 where usrId!=:key")
-    fun setOtherLogin0(key: String)
+    suspend fun setOtherLogin0(key: String)
 
     @Query("update local_user_info_table set currentLoginState=1 where usrId=:key")
-    fun setCurrentLogin1(key: String)
+    suspend fun setCurrentLogin1(key: String)
 }
