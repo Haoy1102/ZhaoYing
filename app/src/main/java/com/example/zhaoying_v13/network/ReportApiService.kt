@@ -1,5 +1,7 @@
 package com.example.zhaoying_v13.network
 
+import com.example.zhaoying_v13.ui.login.model.RegisterUser
+import com.example.zhaoying_v13.ui.login.model.UserRegResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -20,10 +22,9 @@ import retrofit2.http.Multipart
 
 
 
-
-
+//192.168.105.247
+//110.40.185.43
 private const val BASE_URL = "http://110.40.185.43:8000/"
-
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -48,15 +49,20 @@ interface ReportApiService {
         @Part("password")password:RequestBody
         ):Call<UserLoginResponse>
 
-
-    //适用于数据量少的情况
     @POST("api/user/upload/{filename}")
     @Multipart
     fun upLoadFiles(
-        //@Part("phonenumber") phonenumber:RequestBody,
         @Part file: MultipartBody.Part?,
         @Path("filename") filename:String
     ): Call<String>?
+
+    @JvmSuppressWildcards
+    @POST("api/user/register")
+    @Multipart
+    fun userRegister(
+        @PartMap params:Map<String, RequestBody>,
+        //@Part avatar: MultipartBody.Part?,
+    ): Call<RegisterUser>
 }
 
 object ReportApi {

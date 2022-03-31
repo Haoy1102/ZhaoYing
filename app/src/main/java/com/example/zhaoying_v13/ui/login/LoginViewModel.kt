@@ -18,6 +18,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class LoginViewModel(
     val database: UserDatabaseDao,
@@ -45,37 +46,43 @@ class LoginViewModel(
             RequestBody.create(MediaType.parse("multipart/form-data"), password)
 
         //网络请求
-        ReportApi.retrofitService.userLogin(phonenumberBody, passwordBody)
-            .enqueue(object : Callback<UserLoginResponse> {
-                override fun onResponse(
-                    call: Call<UserLoginResponse>,
-                    response: Response<UserLoginResponse>
-                ) {//登陆成功
-                    if (response.body()!!.status == "200") {
-                        Log.i(
-                            "TAGLogin",
-                            "success:" + response.body()?.id + "   " + response.body()!!.status
-                        )
-                        //设置ID 网络状态码和登陆状态
-                        _loggedInUser.value = LoggedInUser("200", response.body()!!.id!!)
+        try {
+            ReportApi.retrofitService.userLogin(phonenumberBody, passwordBody)
+                .enqueue(object : Callback<UserLoginResponse> {
+                    override fun onResponse(
+                        call: Call<UserLoginResponse>,
+                        response: Response<UserLoginResponse>
+                    ) {//登陆成功
+                        if (response.body()!!.status == "200") {
+                            Log.i(
+                                "SELF_TAG",
+                                "success:" + response.body()?.id + "   " + response.body()!!.status
+                            )
+                            //设置ID 网络状态码和登陆状态
+                            _loggedInUser.value = LoggedInUser("200", response.body()!!.id!!)
 //                        _loggedInUser.value!!.userId = response.body()!!.id!!
 //                        _loggedInUser.value!!.status = "200"
-                        Log.i("TAGLogin", "status:" + _loggedInUser.value!!.status)
-                    } else if (response.body()!!.status == "B404") {
-                        //密码不正确
-                        _loggedInUser.value = LoggedInUser("B404")
-                        Log.i("TAGLogin", "密码不正确:" + response.body()!!.status)
-                    } else {
-                        //账户不存在
-                        _loggedInUser.value = LoggedInUser("A404")
-                        Log.i("TAGLogin", "账户不存在:" + response.body()!!.status)
+                            Log.i("SELF_TAG", "status:" + _loggedInUser.value!!.status)
+                        } else if (response.body()!!.status == "B404") {
+                            //密码不正确
+                            _loggedInUser.value = LoggedInUser("B404")
+                            Log.i("SELF_TAG", "密码不正确:" + response.body()!!.status)
+                        } else {
+                            //账户不存在
+                            _loggedInUser.value = LoggedInUser("A404")
+                            Log.i("SELF_TAG", "账户不存在:" + response.body()!!.status)
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
-                    Log.i("TAGLogin", "onFailure:" + t.message)
-                }
-            })
+                    override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
+                        Log.i("SELF_TAG", "onFailure:" + t.message)
+                    }
+                })
+        }catch (e:Exception){
+            Log.i("SELF_TAG",e.message.toString())
+        }
+
+
 
         //return Result.Error(data = _loggedInUser.value!!)
         //Default设置

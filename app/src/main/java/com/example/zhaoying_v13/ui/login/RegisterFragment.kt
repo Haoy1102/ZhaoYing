@@ -12,7 +12,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import com.example.zhaoying_v13.R
+import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.RegisterFragmentBinding
+import com.example.zhaoying_v13.ui.login.model.RegisterUser
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,7 +26,7 @@ class RegisterFragment : Fragment() {
         fun newInstance() = RegisterFragment()
     }
 
-    private lateinit var viewModel: RegisterViewModel
+    private lateinit var registerViewModel: RegisterViewModel
     private var _binding: RegisterFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -49,10 +51,35 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //数据库初始化处理
+        val application = requireNotNull(this.activity).application
+        val dataSource = UserDatabase.getInstance(application).userDatabaseDao
+        val viewModelFactory = RegisterViewModelFactory(dataSource, application)
+        registerViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(RegisterViewModel::class.java)
+
+
+        //UserViewModel
+        binding.regiButton.setOnClickListener {
+            //loadingBar显示
+            binding.loading.visibility = View.VISIBLE
+            val userInfo=RegisterUser(
+                binding.phoneNumberText.text.toString(),
+                binding.passwordText.text.toString(),
+                binding.sexSelected.text.toString(),
+                binding.displayNameText.text.toString(),
+               binding.heightText.text.toString(),
+                binding.weightText.text.toString(),
+                binding.bitrhText.text.toString(),
+                null,null,null
+            )
+            registerViewModel.register(userInfo)
+        }
+
+
     }
 
 
@@ -102,7 +129,6 @@ class RegisterFragment : Fragment() {
         val sd = SimpleDateFormat("yyyy-MM-dd")
         return sd.format(date)
     }
-
 
 
 }
