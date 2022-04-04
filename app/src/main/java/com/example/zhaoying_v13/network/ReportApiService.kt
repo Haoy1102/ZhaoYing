@@ -23,8 +23,9 @@ import retrofit2.http.Multipart
 
 
 //192.168.105.247
+//192.168.0.100
 //110.40.185.43
-private const val BASE_URL = "http://110.40.185.43:8000/"
+private const val BASE_URL = "http://192.168.0.100:8000/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -49,6 +50,20 @@ interface ReportApiService {
         @Part("password")password:RequestBody
         ):Call<UserLoginResponse>
 
+
+    @POST("api/user/register")
+    @Multipart
+    fun userRegister(
+//        @Part("name") name:RequestBody,
+//        @Part("phone_number")phonenumber:RequestBody,
+//        @Part("password1")password1:RequestBody,
+//        @Part("password2")password2:RequestBody,
+//        @Part("gender")gender:RequestBody
+
+        @PartMap params:Map<String, @JvmSuppressWildcards RequestBody>
+        //@Part avatar: MultipartBody.Part?,
+    ): Call<UserRegResponse>
+
     @POST("api/user/upload/{filename}")
     @Multipart
     fun upLoadFiles(
@@ -56,13 +71,7 @@ interface ReportApiService {
         @Path("filename") filename:String
     ): Call<String>?
 
-    @JvmSuppressWildcards
-    @POST("api/user/register")
-    @Multipart
-    fun userRegister(
-        @PartMap params:Map<String, RequestBody>,
-        //@Part avatar: MultipartBody.Part?,
-    ): Call<RegisterUser>
+
 }
 
 object ReportApi {
