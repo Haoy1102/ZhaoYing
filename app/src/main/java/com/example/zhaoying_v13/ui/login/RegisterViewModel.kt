@@ -30,31 +30,25 @@ class RegisterViewModel(
     val regStatus: LiveData<String> = _regStatus
 
     fun register(userInfo:RegisterUser){
-        //val params: Map<String, RequestBody> = HashMap()
-        val params= HashMap<String, RequestBody>()
-//        val avatar:RequestBody?
 
-//        params.plus(Pair("phone_number",toRequestBody(userInfo.phone_number)))
-//        params.plus(Pair("password1",toRequestBody(userInfo.password)))
-//        params.plus(Pair("password2",toRequestBody(userInfo.password)))
-//        params.plus(Pair("name",toRequestBody(userInfo.displayName)))
-//        params.plus(Pair("gender",toRequestBody(userInfo.gender)))
+        val params= HashMap<String, RequestBody>()
 
         params["phone_number"] = toRequestBody(userInfo.phone_number)
         params["password1"] = toRequestBody(userInfo.password)
         params["password2"] = toRequestBody(userInfo.password)
         params["name"] = toRequestBody(userInfo.displayName)
         params["gender"] = toRequestBody(userInfo.gender)
-//        if (userInfo.birthday!=null)
-//        params["birthday"] = toRequestBody(userInfo.birthday)
-//        if (userInfo.height!=null)
-//            params["height"] = toRequestBody(userInfo.height)
-//        if (userInfo.weight!=null)
-//            params["weight"] = toRequestBody(userInfo.weight)
-//        if (userInfo.idcard_number!=null)
-//        params["idcard_number"] = toRequestBody(userInfo.idcard_number)
-//        if (userInfo.hobbies!=null)
-//        params["hobbies"] = toRequestBody(userInfo.hobbies)
+        params["gender"] = toRequestBody(userInfo.gender)
+        if (userInfo.birthday!=null)
+        params["birthday"] = toRequestBody(userInfo.birthday)
+        if (userInfo.height!=null)
+            params["height"] = toRequestBody(userInfo.height)
+        if (userInfo.weight!=null)
+            params["weight"] = toRequestBody(userInfo.weight)
+        if (userInfo.idcard_number!=null)
+        params["idcard_number"] = toRequestBody(userInfo.idcard_number)
+        if (userInfo.hobbies!=null)
+        params["hobbies"] = toRequestBody(userInfo.hobbies)
 
         //头像
 //        if (userInfo.avatar!=null)

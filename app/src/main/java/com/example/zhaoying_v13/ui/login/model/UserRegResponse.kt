@@ -17,9 +17,6 @@ data class UserRegResponse (
     val idcard_number:String?=null,
     //val avatar_status:String?=null,
     //val avatar:File?=null,
-
-
-
 )
 
 

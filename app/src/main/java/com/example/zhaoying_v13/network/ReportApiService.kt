@@ -25,7 +25,7 @@ import retrofit2.http.Multipart
 //192.168.105.247
 //192.168.0.100
 //110.40.185.43
-private const val BASE_URL = "http://192.168.0.100:8000/"
+private const val BASE_URL = "http://192.168.0.102:8000/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
