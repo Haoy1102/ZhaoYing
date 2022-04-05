@@ -10,8 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.network.ReportApi
-import com.example.zhaoying_v13.network.UserLoginResponse
-import com.example.zhaoying_v13.ui.login.model.LoggedInUser
+import com.example.zhaoying_v13.ui.login.model.UserLoginInfo
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -28,8 +27,8 @@ class LoginViewModel(
 //    private val _loginForm = MutableLiveData<LoginFormState>()
 //    val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    private val _loggedInUser = MutableLiveData<LoggedInUser>()
-    val loggedInUser: LiveData<LoggedInUser> = _loggedInUser
+    private val _loggedInUser = MutableLiveData<UserLoginInfo>()
+    val loggedInUser: LiveData<UserLoginInfo> = _loggedInUser
 
 //    private val _loginResult = MutableLiveData<LoginResult>()
 //    val loginResult: LiveData<LoginResult> = _loginResult
@@ -48,33 +47,35 @@ class LoginViewModel(
         //网络请求
         try {
             ReportApi.retrofitService.userLogin(phonenumberBody, passwordBody)
-                .enqueue(object : Callback<UserLoginResponse> {
+                .enqueue(object : Callback<UserLoginInfo> {
                     override fun onResponse(
-                        call: Call<UserLoginResponse>,
-                        response: Response<UserLoginResponse>
+                        call: Call<UserLoginInfo>,
+                        info: Response<UserLoginInfo>
                     ) {//登陆成功
-                        if (response.body()!!.status == "200") {
+                        if (info.body()!!.status == "200") {
                             Log.i(
                                 "SELF_TAG",
-                                "success:" + response.body()?.id + "   " + response.body()!!.status
+                                "success:" + info.body()?.userId + "   " + info.body()!!.status
                             )
                             //设置ID 网络状态码和登陆状态
-                            _loggedInUser.value = LoggedInUser("200", response.body()!!.id!!)
+                            _loggedInUser.value = UserLoginInfo("200",
+                                info.body()!!.userId!!,
+                                info.body()!!.displayName)
 //                        _loggedInUser.value!!.userId = response.body()!!.id!!
 //                        _loggedInUser.value!!.status = "200"
                             Log.i("SELF_TAG", "status:" + _loggedInUser.value!!.status)
-                        } else if (response.body()!!.status == "B404") {
+                        } else if (info.body()!!.status == "B404") {
                             //密码不正确
-                            _loggedInUser.value = LoggedInUser("B404")
-                            Log.i("SELF_TAG", "密码不正确:" + response.body()!!.status)
+                            _loggedInUser.value = UserLoginInfo("B404")
+                            Log.i("SELF_TAG", "密码不正确:" + info.body()!!.status)
                         } else {
                             //账户不存在
-                            _loggedInUser.value = LoggedInUser("A404")
-                            Log.i("SELF_TAG", "账户不存在:" + response.body()!!.status)
+                            _loggedInUser.value = UserLoginInfo("A404")
+                            Log.i("SELF_TAG", "账户不存在:" + info.body()!!.status)
                         }
                     }
 
-                    override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<UserLoginInfo>, t: Throwable) {
                         Log.i("SELF_TAG", "onFailure:" + t.message)
                     }
                 })
@@ -104,13 +105,13 @@ class LoginViewModel(
 //        }
     }
 
-    fun updateDatabaseWithUser(loggedInUser: LoggedInUser) {
+    fun updateDatabaseWithUser(loggedInUser: UserLoginInfo) {
         viewModelScope.launch {
             val key = loggedInUser.userId!!
             //本地没有信息，录入
             if (getUserByID(key) == null) {
                 Log.i("SLEF_TAG", "Database:本地没有信息，录入")
-                val user = UserInfo(key, loggedInUser.displayName)
+                val user = UserInfo(key, loggedInUser.displayName!!)
                 database.setOtherLogin0(key)
                 database.insert(user)
             } else {//本地保存有用户的信息 更新状态即可

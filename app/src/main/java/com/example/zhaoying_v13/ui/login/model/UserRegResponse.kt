@@ -15,6 +15,7 @@ data class UserRegResponse (
     val birthday:String?=null,
     val hobbies:String?=null,
     val idcard_number:String?=null,
+    val id:String?=null
     //val avatar_status:String?=null,
     //val avatar:File?=null,
 )

@@ -1,10 +1,8 @@
 package com.example.zhaoying_v13.network
 
-import com.example.zhaoying_v13.ui.login.model.RegisterUser
+import com.example.zhaoying_v13.ui.login.model.UserLoginInfo
 import com.example.zhaoying_v13.ui.login.model.UserRegResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
@@ -14,8 +12,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Response
 
 
 import retrofit2.http.Multipart
@@ -48,7 +44,7 @@ interface ReportApiService {
     fun userLogin(
         @Part("phone_number")phonenumber:RequestBody,
         @Part("password")password:RequestBody
-        ):Call<UserLoginResponse>
+        ):Call<UserLoginInfo>
 
 
     @POST("api/user/register")

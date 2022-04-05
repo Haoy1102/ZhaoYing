@@ -13,7 +13,8 @@ import androidx.navigation.Navigation
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.FragmentLoginBinding
-import com.example.zhaoying_v13.ui.login.model.LoggedInUser
+import com.example.zhaoying_v13.ui.login.model.UserLoginInfo
+
 
 class LoginFragment : Fragment() {
 
@@ -72,6 +73,7 @@ class LoginFragment : Fragment() {
                     Log.i("SLEF_TAG","loggedInUser.status==\"200\"")
                     updateUiWithUser(loggedInUser)
                     updateDatabaseWithUser(loggedInUser)
+                    requireActivity().finish()
                 }
                 if (loggedInUser.status=="B404")
                     showLoginFailed("密码不正确")
@@ -122,14 +124,14 @@ class LoginFragment : Fragment() {
 
     }
 
-    private fun updateUiWithUser(loggedInUser: LoggedInUser) {
+    private fun updateUiWithUser(loggedInUser: UserLoginInfo) {
         val welcome = getString(R.string.welcome) + loggedInUser.displayName
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
-    private fun updateDatabaseWithUser(loggedInUser: LoggedInUser){
+    private fun updateDatabaseWithUser(loggedInUser: UserLoginInfo){
         loginViewModel.updateDatabaseWithUser(loggedInUser)
     }
 

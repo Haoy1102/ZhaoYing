@@ -1,5 +1,6 @@
 package com.example.zhaoying_v13.ui.login
 
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.RegisterFragmentBinding
@@ -61,12 +63,32 @@ class RegisterFragment : Fragment() {
         registerViewModel = ViewModelProvider(this, viewModelFactory)
             .get(RegisterViewModel::class.java)
 
-
         //UserViewModel
+
+        registerViewModel.registerUser.observe(viewLifecycleOwner,
+            Observer { registerUser ->
+                registerUser ?: return@Observer
+                binding.loading.visibility = View.GONE
+                if (registerUser.status=="200"){
+                    Log.i("SELF_TAG","loggedInUser.status==\"200\"")
+                    updateUiWithUser(registerViewModel.registerUser.value!!)
+                    updateDatabaseWithUser(registerUser)
+                    requireActivity().finish()
+                }
+                if (registerUser.status=="A400")
+                    showLoginFailed("用户名未填")
+                if (registerUser.status=="B400")
+                    showLoginFailed("两次密码输入不同")
+                if (registerUser.status=="C400")
+                    showLoginFailed("该手机号已被注册")
+            })
+
+
         binding.regiButton.setOnClickListener {
             //loadingBar显示
             binding.loading.visibility = View.VISIBLE
             val userInfo=RegisterUser(
+                null,
                 binding.phoneNumberText.text.toString(),
                 binding.passwordText.text.toString(),
                 binding.displayNameText.text.toString(),
@@ -78,10 +100,23 @@ class RegisterFragment : Fragment() {
             )
             registerViewModel.register(userInfo)
         }
-
-
     }
 
+    private fun updateUiWithUser(registerUser: RegisterUser) {
+        val welcome = getString(R.string.welcome) + registerUser.displayName
+        // TODO : initiate successful logged in experience
+        val appContext = context?.applicationContext ?: return
+        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+    }
+
+    private fun updateDatabaseWithUser(registerUser: RegisterUser){
+        registerViewModel.updateDatabaseWithUser(registerUser)
+    }
+
+    private fun showLoginFailed(errorString: String) {
+        val appContext = context?.applicationContext ?: return
+        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+    }
 
     fun inspectPassword() {
         binding.inspectPasswordText.addTextChangedListener(
