@@ -78,10 +78,13 @@ class MyinfoFragment : Fragment() {
         Log.i("Database","1:setLoginTipsOrUserName()执行")
         myinfoViewModel.currentUser.observe(viewLifecycleOwner,
             Observer { it->
-                if (it==null)
-                    binding.tvLoginTipsOrUserName.setText("点击头像可以进行登录噢！")
+                if (it==null){
+                    binding.ivAvatar.setImageResource(R.drawable.ic_logo_black_76dp)
+                    binding.tvLoginTipsOrUserName.setText("点击头像可以进行登录噢")
+                }
                 else{
                     binding.tvLoginTipsOrUserName.setText(it.displayName)
+                    binding.ivAvatar.setImageResource(R.mipmap.user_avatar)
                 }
 
         })

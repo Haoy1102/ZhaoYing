@@ -49,15 +49,15 @@ class MyinfoViewModel(
 
     fun initUserState(){
         viewModelScope.launch {
-            val userList=getAllUser()
-            Log.i("Database","AllUser:"+userList[0].toString())
-            _currentUser.value=userList[0]
+            val currentUser=getCurrentLoginUserInfo()
+            Log.i("Database","getCurrentLoginUserInfo:"+currentUser.toString())
+            _currentUser.value=currentUser
         }
     }
 
-    suspend fun getAllUser():List<UserInfo?>{
-        val userList=database.getAllUser()
-        return userList
+    suspend fun getCurrentLoginUserInfo():UserInfo?{
+        val currentUser=database.getCurrentLoginUserInfo()
+        return currentUser
     }
 
 //     private fun getCurrentUser() {
