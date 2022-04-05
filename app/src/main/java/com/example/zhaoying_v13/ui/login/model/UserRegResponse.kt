@@ -6,10 +6,10 @@ import java.sql.ClientInfoStatus
 
 data class UserRegResponse (
     val status:String,
-    val phone_number:String,
-    val password:String,
-    val gender:String,
-    @Json(name = "name")val displayName:String,//与发送不同命
+    val phone_number:String?,
+    val password:String?,
+    @Json(name = "name")val displayName:String?,//与发送不同命
+    val gender:String?,
     val height:String?=null,
     val weight:String?=null,
     val birthday:String?=null,

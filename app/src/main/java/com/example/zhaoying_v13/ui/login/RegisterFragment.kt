@@ -69,8 +69,8 @@ class RegisterFragment : Fragment() {
             val userInfo=RegisterUser(
                 binding.phoneNumberText.text.toString(),
                 binding.passwordText.text.toString(),
-                binding.sexSelected.text.toString(),
                 binding.displayNameText.text.toString(),
+                binding.sexSelected.text.toString(),
                binding.heightText.text.toString(),
                 binding.weightText.text.toString(),
                 binding.bitrhText.text.toString(),

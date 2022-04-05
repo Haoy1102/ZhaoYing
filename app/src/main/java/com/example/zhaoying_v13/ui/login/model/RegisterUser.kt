@@ -10,7 +10,7 @@ data class RegisterUser (
     val height:String?=null,
     val weight:String?=null,
     val birthday:String?=null,
-    val avatar:File?=null,
+    val hobbies:String?=null,
     val idcard_number:String?=null,
-    val hobbies:String?=null
+    val avatar:File?=null
         )
