@@ -1,4 +1,4 @@
-package com.example.zhaoying_v13.ui.login
+package com.example.zhaoying_v13.ui.myInfo.login
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +13,7 @@ import androidx.navigation.Navigation
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.FragmentLoginBinding
-import com.example.zhaoying_v13.ui.login.model.UserLoginInfo
+import com.example.zhaoying_v13.ui.myInfo.login.model.UserLoginInfo
 
 
 class LoginFragment : Fragment() {

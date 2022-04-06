@@ -1,4 +1,4 @@
-package com.example.zhaoying_v13.ui.login
+package com.example.zhaoying_v13.ui.myInfo.login
 
 import android.app.Application
 import android.util.Log
@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.network.ReportApi
-import com.example.zhaoying_v13.ui.login.model.UserLoginInfo
+import com.example.zhaoying_v13.ui.myInfo.login.model.UserLoginInfo
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody

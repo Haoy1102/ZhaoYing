@@ -16,10 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZhaoYingv13">
         <activity
-            android:name=".ui.detection.DetectionActivity"
+            android:name="com.example.zhaoying_v13.ui.home.detection.DetectionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="com.example.zhaoying_v13.ui.myInfo.login.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

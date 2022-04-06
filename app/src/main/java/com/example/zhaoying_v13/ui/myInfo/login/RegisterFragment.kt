@@ -1,4 +1,4 @@
-package com.example.zhaoying_v13.ui.login
+package com.example.zhaoying_v13.ui.myInfo.login
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +16,7 @@ import android.widget.Toast
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.RegisterFragmentBinding
-import com.example.zhaoying_v13.ui.login.model.RegisterUser
+import com.example.zhaoying_v13.ui.myInfo.login.model.RegisterUser
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*

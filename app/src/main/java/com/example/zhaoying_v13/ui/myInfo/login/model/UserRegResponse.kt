@@ -1,8 +1,6 @@
-package com.example.zhaoying_v13.ui.login.model
+package com.example.zhaoying_v13.ui.myInfo.login.model
 
 import com.squareup.moshi.Json
-import java.io.File
-import java.sql.ClientInfoStatus
 
 data class UserRegResponse (
     val status:String,

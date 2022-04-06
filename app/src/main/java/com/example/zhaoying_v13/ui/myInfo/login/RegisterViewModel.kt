@@ -1,8 +1,7 @@
-package com.example.zhaoying_v13.ui.login
+package com.example.zhaoying_v13.ui.myInfo.login
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.network.ReportApi
-import com.example.zhaoying_v13.ui.login.model.RegisterUser
-import com.example.zhaoying_v13.ui.login.model.UserRegResponse
+import com.example.zhaoying_v13.ui.myInfo.login.model.RegisterUser
+import com.example.zhaoying_v13.ui.myInfo.login.model.UserRegResponse
 import kotlinx.coroutines.launch
 
 import okhttp3.MediaType
@@ -19,7 +18,6 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
 
 class RegisterViewModel(
     val database: UserDatabaseDao,

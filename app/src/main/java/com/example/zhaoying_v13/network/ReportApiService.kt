@@ -1,7 +1,7 @@
 package com.example.zhaoying_v13.network
 
-import com.example.zhaoying_v13.ui.login.model.UserLoginInfo
-import com.example.zhaoying_v13.ui.login.model.UserRegResponse
+import com.example.zhaoying_v13.ui.myInfo.login.model.UserLoginInfo
+import com.example.zhaoying_v13.ui.myInfo.login.model.UserRegResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

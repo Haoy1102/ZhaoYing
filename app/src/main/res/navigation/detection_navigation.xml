@@ -6,7 +6,7 @@
     app:startDestination="@id/selectFragment">
     <fragment
         android:id="@+id/selectFragment"
-        android:name="com.example.zhaoying_v13.ui.detection.SelectFragment"
+        android:name="com.example.zhaoying_v13.ui.home.detection.SelectFragment"
         android:label="select_fragment"
         tools:layout="@layout/select_fragment" />
 </navigation>

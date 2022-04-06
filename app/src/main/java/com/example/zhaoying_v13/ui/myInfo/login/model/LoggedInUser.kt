@@ -1,4 +1,4 @@
-package com.example.zhaoying_v13.ui.login.model
+package com.example.zhaoying_v13.ui.myInfo.login.model
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
