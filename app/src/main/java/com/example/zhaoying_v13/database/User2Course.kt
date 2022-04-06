@@ -2,7 +2,11 @@ package com.example.zhaoying_v13.database
 
 import androidx.room.*
 
-@Entity(tableName="local_user2course_table", primaryKeys = ["userID","courseID"])
+
+@Entity(tableName="local_user2course_table",
+    primaryKeys = ["userID","courseID"],
+    indices = arrayOf(Index("courseID"))
+    )
 data class User2Course(
     val userID:String,
     val courseID:String
