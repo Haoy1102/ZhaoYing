@@ -1,10 +1,7 @@
 package com.example.zhaoying_v13.database;
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import kotlinx.coroutines.Deferred
 
 @Dao
@@ -15,7 +12,7 @@ public interface UserDatabaseDao {
     @Update
     fun update(user:UserInfo)
 
-    @Query("SELECT * from local_user_info_table WHERE usrID = :key ORDER BY lastLoginTime DESC LIMIT 1")
+    @Query("SELECT * from local_user_info_table WHERE userID = :key ORDER BY lastLoginTime DESC LIMIT 1")
     suspend fun getUserByID(key: String): UserInfo?
 
     @Query("DELETE FROM local_user_info_table")
@@ -35,9 +32,17 @@ public interface UserDatabaseDao {
     @Query("select count() from local_user_info_table where currentLoginState=1")
     fun getCurrentLoginUserNum(): Int
 
-    @Query("update local_user_info_table set currentLoginState=0 where usrId!=:key")
+    @Query("update local_user_info_table set currentLoginState=0 where userID!=:key")
     suspend fun setOtherLogin0(key: String)
 
-    @Query("update local_user_info_table set currentLoginState=1 where usrId=:key")
+    @Query("update local_user_info_table set currentLoginState=1 where userID=:key")
     suspend fun setCurrentLogin1(key: String)
+
+    @Insert
+    suspend fun insertCourse(courseInfo:CourseInfo)
+
+    @Transaction
+    @Query("select * from local_user_info_table where userID = :key")
+    fun getUsersWithCourses(key: String):List<UserWithCourses>
+
 }

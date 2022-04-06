@@ -3,6 +3,7 @@ package com.example.zhaoying_v13.ui.myInfo
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.zhaoying_v13.database.CourseInfo
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.network.Report
@@ -46,8 +47,11 @@ class MyinfoViewModel(
             val currentUser=getCurrentLoginUserInfo()
             Log.i("Database","getCurrentLoginUserInfo:"+currentUser.toString())
             _currentUser.value=currentUser
+
+            //database.insertCourse(CourseInfo())
         }
     }
+
 
 
     suspend fun getCurrentLoginUserInfo():UserInfo?{

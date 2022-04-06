@@ -66,6 +66,7 @@ class MyinfoFragment : Fragment() {
 
         //设置图标下的文字保存登陆状态
         setLoginTipsOrUserName()
+
     }
 
     override fun onResume() {
