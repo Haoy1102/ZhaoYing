@@ -29,7 +29,8 @@
         tools:layout="@layout/fragment_myinfo" >
         <action
             android:id="@+id/action_navigation_notifications_to_loginActivity"
-            app:destination="@id/loginActivity" />
+            app:destination="@id/loginActivity"
+            app:popUpTo="@id/navigation_notifications" />
     </fragment>
 
     <activity

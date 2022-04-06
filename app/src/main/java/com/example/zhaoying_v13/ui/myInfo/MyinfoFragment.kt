@@ -68,11 +68,14 @@ class MyinfoFragment : Fragment() {
         setLoginTipsOrUserName()
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
+    override fun onResume() {
+        super.onResume()
+        Log.i("LIFE_TAG","onResume()")
+        myinfoViewModel.updateUserState()
         setLoginTipsOrUserName()
     }
+
+
 
     fun setLoginTipsOrUserName(){
         Log.i("Database","1:setLoginTipsOrUserName()执行")

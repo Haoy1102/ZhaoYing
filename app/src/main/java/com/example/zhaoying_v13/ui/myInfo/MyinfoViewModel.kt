@@ -2,11 +2,7 @@ package com.example.zhaoying_v13.ui.myInfo
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.network.Report
@@ -42,18 +38,17 @@ class MyinfoViewModel(
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-       //getReports()
-//        getCurrentUser()
-        initUserState()
+        updateUserState()
     }
 
-    fun initUserState(){
+    fun updateUserState(){
         viewModelScope.launch {
             val currentUser=getCurrentLoginUserInfo()
             Log.i("Database","getCurrentLoginUserInfo:"+currentUser.toString())
             _currentUser.value=currentUser
         }
     }
+
 
     suspend fun getCurrentLoginUserInfo():UserInfo?{
         val currentUser=database.getCurrentLoginUserInfo()
@@ -103,6 +98,7 @@ class MyinfoViewModel(
             }
         }
     }
+
 
     override fun onCleared() {
         super.onCleared()
