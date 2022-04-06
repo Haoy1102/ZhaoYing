@@ -51,5 +51,6 @@
         android:id="@+id/courseDetailActivity"
         android:name="com.example.zhaoying_v13.ui.home.CourseDetailActivity"
         android:label="activity_course_detail"
-        tools:layout="@layout/activity_course_detail" />
+        tools:layout="@layout/activity_course_detail" >/>
+    </activity>
 </navigation>

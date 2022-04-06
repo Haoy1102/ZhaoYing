@@ -1,17 +1,20 @@
 package com.example.zhaoying_v13.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphNavigator
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.databinding.FragmentHomeBinding
 
@@ -40,9 +43,18 @@ class HomeFragment : Fragment() {
             Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_detectionActivity)
         )
 
-        binding.imageView7.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_courseDetailActivity)
-        )
+        //太极图片点击
+        binding.imageView7.setOnClickListener{
+//            val amount="2"
+//            val bundle= bundleOf("courseID" to amount)
+//            view?.findNavController()!!.navigate(R.id.action_navigation_home_to_courseDetailActivity,bundle)
+            startActivity(
+                Intent(context, CourseDetailActivity::class.java)
+                .putExtra(CourseDetailActivity.COURSE_ID, "2"))
+        }
+
+
+
 //        val textView: TextView = binding.textHome
 //        homeViewModel.text.observe(viewLifecycleOwner, Observer {
 //            textView.text = it
