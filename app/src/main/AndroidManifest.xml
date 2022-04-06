@@ -16,10 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZhaoYingv13">
         <activity
-            android:name="com.example.zhaoying_v13.ui.home.detection.DetectionActivity"
+            android:name=".ui.home.CourseDetailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_course_detail"
+            android:theme="@style/Theme.ZhaoYingv13.NoActionBar" />
+        <activity
+            android:name=".ui.home.CourseActivity"
+            android:exported="false"
+            android:label="@string/title_activity_course"
+            android:theme="@style/Theme.ZhaoYingv13.NoActionBar" />
+        <activity
+            android:name=".ui.home.detection.DetectionActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.zhaoying_v13.ui.myInfo.login.LoginActivity"
+            android:name=".ui.myInfo.login.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

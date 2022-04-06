@@ -14,6 +14,10 @@
             android:id="@+id/action_navigation_home_to_detectionActivity"
             app:destination="@id/detectionActivity"
             app:popUpTo="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_home_to_courseDetailActivity"
+            app:destination="@id/courseDetailActivity"
+            app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -43,4 +47,9 @@
         android:name="com.example.zhaoying_v13.ui.home.detection.DetectionActivity"
         android:label="activity_detection"
         tools:layout="@layout/activity_detection" />
+    <activity
+        android:id="@+id/courseDetailActivity"
+        android:name="com.example.zhaoying_v13.ui.home.CourseDetailActivity"
+        android:label="activity_course_detail"
+        tools:layout="@layout/activity_course_detail" />
 </navigation>
