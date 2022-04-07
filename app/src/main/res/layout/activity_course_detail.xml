@@ -61,7 +61,7 @@
                     android:layout_marginStart="16dp"
 
                     android:layout_marginTop="16dp"
-                    android:text="太极拳"
+                    android:text="11"
                     android:textSize="34sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
