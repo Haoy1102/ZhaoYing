@@ -11,9 +11,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import com.example.zhaoying_v13.R
+import com.example.zhaoying_v13.database.UserDatabase
+import com.example.zhaoying_v13.database.UserWithCourses
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
 import com.example.zhaoying_v13.network.ReportApi
+import com.example.zhaoying_v13.ui.myInfo.login.LoginViewModel
+import com.example.zhaoying_v13.ui.myInfo.login.LoginViewModelFactory
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
@@ -30,8 +38,10 @@ class SelectFragment : Fragment() {
     private lateinit var viewModel: SelectViewModel
     private var _binding: SelectFragmentBinding? = null
     private val binding get() = _binding!!
-    private lateinit var imagePath:String
-    private var imageState=0
+
+    private lateinit var imagePath: String
+    private var imageState = 0
+
     companion object {
         fun newInstance() = SelectFragment()
     }
@@ -42,9 +52,26 @@ class SelectFragment : Fragment() {
     ): View? {
         _binding = SelectFragmentBinding.inflate(inflater, container, false)
 
-        val btnSelectFile = binding.btnSelectFile
-        btnSelectFile.setOnClickListener {
-            Log.i("Tag", "按钮有效")
+
+
+
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val application = requireNotNull(this.activity).application
+        val dataSource = UserDatabase.getInstance(application).userDatabaseDao
+        val viewModelFactory = SelectViewModelFactory(dataSource, application)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(SelectViewModel::class.java)
+
+        initCourseMenu()
+
+        binding.btnSelectFile.setOnClickListener {
             AndPermission.with(this@SelectFragment)
                 .runtime()
                 .permission(
@@ -71,18 +98,29 @@ class SelectFragment : Fragment() {
         }
 
         binding.btnUploadFile.setOnClickListener {
-            if (imageState==1){
-                Log.i("Tag", "上传按钮有效")
+            if (imageState == 1) {
                 uploadFile(imagePath)
-            }
-            else{
-                Log.i("Tag", "上传按钮退出")
-                Toast.makeText(context,"选择文件后才可以上传噢",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "选择文件后才可以上传噢", Toast.LENGTH_LONG).show()
             }
         }
 
-        return binding.root
     }
+
+
+
+    private fun initCourseMenu(){
+        viewModel.courseMenuItem.observe(viewLifecycleOwner,
+            Observer { it ->
+                if (it != null) {
+                    val items = viewModel.courseMenuItem.value
+                    val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items!!)
+                    (binding.courseMenu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+                }
+            })
+    }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -114,14 +152,9 @@ class SelectFragment : Fragment() {
 //            binding.textField.
             binding.inputTextFiled.setText(imagePath)
             Log.i("TAG", imagePath)
-            imageState=1
+            imageState = 1
             c.close()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun uploadFile(path: String) {
@@ -130,16 +163,23 @@ class SelectFragment : Fragment() {
         //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
         val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
-        ReportApi.retrofitService.upLoadFiles(part,file.name)?.enqueue(object :Callback<String>{
+        ReportApi.retrofitService.upLoadFiles(part, file.name)?.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Log.i("TAG", "状态码：" + response.body().toString())
-                Log.i("TAG","路径："+file.name)
+                Log.i("TAG", "路径：" + file.name)
             }
+
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.i("TAG", "错误信息："+t.toString() )
+                Log.i("TAG", "错误信息：" + t.toString())
             }
         })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
 
 

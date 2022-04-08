@@ -48,11 +48,21 @@ class CourseDetailActivity : AppCompatActivity() {
                 .setTitle("确认")
                 .setMessage("报名后立即开始课程，确认报名吗？")
                 .setNegativeButton("确定") { dialog, which ->
-                    Log.i("SELF_TAG","需输入数据库")
                     updateDatabase()
+
+                    //直接跳转至选择界面
+//                    MaterialAlertDialogBuilder(this)
+//                        .setTitle("提示")
+//                        .setMessage("可立即体验该课程的姿态估计功能，想要现在体验吗？")
+//                        .setNegativeButton("立即体验") { dialog2, which ->
+//
+//                        }
+//                        .setPositiveButton("稍后体验",null)
+//                        .show()
                 }
                 .setPositiveButton("取消",null)
                 .show()
+
         }
 
 
@@ -71,7 +81,12 @@ class CourseDetailActivity : AppCompatActivity() {
                 Toast.makeText(this@CourseDetailActivity, "请先登录", Toast.LENGTH_LONG).show()
                 return@launch
             }
-            userSignUpCourse(User2Course(curentUserInfo.userID,courseID))
+            else{
+                userSignUpCourse(User2Course(curentUserInfo.userID,courseID))
+                Toast.makeText(this@CourseDetailActivity, "报名成功！", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+
         }
     }
 

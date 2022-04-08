@@ -49,7 +49,7 @@ public interface UserDatabaseDao {
 
     @Transaction
     @Query("select * from local_user_info_table where userID = :key")
-    fun getUsersWithCourses(key: String):List<UserWithCourses>
+    suspend fun getUsersWithCourses(key: String):List<UserWithCourses>
 
     @Query("select * from local_course_info_table where courseID=:key")
     suspend fun getCourseDetailByID(key:String):CourseInfo?

@@ -42,32 +42,29 @@ class MyinfoViewModel(
         updateUserState()
     }
 
-    fun updateUserState(){
+    fun updateUserState() {
         viewModelScope.launch {
-            val currentUser=getCurrentLoginUserInfo()
-            Log.i("Database","getCurrentLoginUserInfo:"+currentUser.toString())
-            _currentUser.value=currentUser
+            val currentUser = getCurrentLoginUserInfo()
+            Log.i("Database", "getCurrentLoginUserInfo:" + currentUser.toString())
+            _currentUser.value = currentUser
 //            database.insertCourse(CourseInfo())
         }
     }
 
-    fun userLogout(){
+    fun userLogout() {
         viewModelScope.launch {
             setAllLogout()
         }
     }
 
 
-
-    suspend fun getCurrentLoginUserInfo():UserInfo?{
-        val currentUser=database.getCurrentLoginUserInfo()
-        return currentUser
+    suspend fun getCurrentLoginUserInfo(): UserInfo? {
+        return database.getCurrentLoginUserInfo()
     }
 
-    suspend fun setAllLogout(){
+    suspend fun setAllLogout() {
         database.setAllLogout()
     }
-
 
 
 //     private fun getCurrentUser() {
@@ -76,7 +73,7 @@ class MyinfoViewModel(
 //             _currentUser.value= loginedUerList?.get(0)
 //         Log.i("Database", "3:getCurrentUser()执行结果："+_currentUser.value.toString())
 
-         //Log.i("Database", ":getCurren()执行结果："+database.getCurrent().value.toString())
+    //Log.i("Database", ":getCurren()执行结果："+database.getCurrent().value.toString())
 
 
 //         Thread {
@@ -96,8 +93,6 @@ class MyinfoViewModel(
 //            //}
 //        }
 //    }
-
-
 
 
     private fun getReports() {
