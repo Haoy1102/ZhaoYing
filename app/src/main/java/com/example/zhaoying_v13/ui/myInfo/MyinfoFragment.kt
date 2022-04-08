@@ -3,8 +3,13 @@ package com.example.zhaoying_v13.ui.myInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Switch
+import android.widget.Toast
+import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -51,14 +56,51 @@ class MyinfoFragment : Fragment() {
             Navigation.createNavigateOnClickListener(R.id.action_navigation_notifications_to_loginActivity)
         )
 
+        binding.ivMore.setOnClickListener { v: View ->
+            showMenu(v, R.menu.myinfo_more_menu)
+        }
+
+
         return root
+    }
+
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+        val popup = PopupMenu(requireContext(), v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.editUserInfo -> {
+                    Toast.makeText(requireContext(), "编辑信息", Toast.LENGTH_LONG).show()
+                    true
+                }
+                R.id.logOut->{
+                    myinfoViewModel.userLogout()
+                    myinfoViewModel.updateUserState()
+                    setLoginTipsOrUserName()
+                    Toast.makeText(requireContext(), "退出成功", Toast.LENGTH_LONG).show()
+                    true
+                }
+                R.id.versionInfo->{
+                    Toast.makeText(requireContext(), "该共功能正在开发中", Toast.LENGTH_LONG).show()
+                    true
+                }
+                else -> false
+            }
+
+        }
+        popup.setOnDismissListener {
+            // Respond to popup being dismissed.
+        }
+        // Show the popup menu.
+        popup.show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val application = requireNotNull(this.activity).application
-        val database=UserDatabase.getInstance(application)
+        val database = UserDatabase.getInstance(application)
         val dataSource = database.userDatabaseDao
         val viewModelFactory = MyinfoViewModelFactory(dataSource, application)
         myinfoViewModel = ViewModelProvider(this, viewModelFactory)
@@ -71,27 +113,25 @@ class MyinfoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.i("LIFE_TAG","onResume()")
+        Log.i("LIFE_TAG", "onResume()")
         myinfoViewModel.updateUserState()
         setLoginTipsOrUserName()
     }
 
 
-
-    fun setLoginTipsOrUserName(){
-        Log.i("Database","1:setLoginTipsOrUserName()执行")
+    fun setLoginTipsOrUserName() {
+        Log.i("Database", "1:setLoginTipsOrUserName()执行")
         myinfoViewModel.currentUser.observe(viewLifecycleOwner,
-            Observer { it->
-                if (it==null){
+            Observer { it ->
+                if (it == null) {
                     binding.ivAvatar.setImageResource(R.drawable.ic_logo_black_76dp)
                     binding.tvLoginTipsOrUserName.setText("点击头像可以进行登录噢")
-                }
-                else{
+                } else {
                     binding.tvLoginTipsOrUserName.setText(it.displayName)
                     binding.ivAvatar.setImageResource(R.mipmap.user_avatar)
                 }
 
-        })
+            })
     }
 
     override fun onDestroyView() {

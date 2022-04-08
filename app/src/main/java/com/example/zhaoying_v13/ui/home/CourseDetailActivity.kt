@@ -7,13 +7,12 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.zhaoying_v13.R
-import com.example.zhaoying_v13.database.CourseInfo
-import com.example.zhaoying_v13.database.UserDatabase
-import com.example.zhaoying_v13.database.UserDatabaseDao
+import com.example.zhaoying_v13.database.*
 import com.example.zhaoying_v13.databinding.ActivityCourseDetailBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
@@ -38,17 +37,19 @@ class CourseDetailActivity : AppCompatActivity() {
 
         dataSource = UserDatabase.getInstance(application).userDatabaseDao
         courseID = intent.getStringExtra(COURSE_ID)!!
+
+        //初始化UI
         initUI()
         //binding.courseNameTextview.text = courseID
 //        val tv= findViewById<TextView>(R.id.textView25)
 //        tv.text = courseID
         binding.elevatedButton.setOnClickListener{
             MaterialAlertDialogBuilder(this)
-                .setTitle("MaterialDialog")
-                .setMessage("这个是测试MaterialAlertDialog的测试Demo")
+                .setTitle("确认")
+                .setMessage("报名后立即开始课程，确认报名吗？")
                 .setNegativeButton("确定") { dialog, which ->
                     Log.i("SELF_TAG","需输入数据库")
-
+                    updateDatabase()
                 }
                 .setPositiveButton("取消",null)
                 .show()
@@ -63,18 +64,39 @@ class CourseDetailActivity : AppCompatActivity() {
 
     }
 
+    private fun updateDatabase(){
+        lifecycleScope.launch {
+            val curentUserInfo=getCurrentLoginUserInfo()
+            if (curentUserInfo==null){
+                Toast.makeText(this@CourseDetailActivity, "请先登录", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+            userSignUpCourse(User2Course(curentUserInfo.userID,courseID))
+        }
+    }
+
 
     private fun initUI() {
         lifecycleScope.launch {
             val courseInfo: CourseInfo? = getCourseDetailByID(courseID)
             if (courseInfo==null)
                 Log.i("SELT_TAG","CourseDetailActivity找不到正确数据")
-            else{
+            else {
                 binding.courseNameTextview.text=courseInfo.name
+                binding.courseGradeTextView.text=courseInfo.grade+"  ·  "+courseInfo.timeConsumeing+"分钟"
+                binding.courseAutorTextView.text=courseInfo.author
+                binding.courseDetailTextView.text=courseInfo.detail
                 //binding.courseGradeTextView.text
             }
 
         }
+    }
+
+    suspend fun getCurrentLoginUserInfo(): UserInfo?{
+        return dataSource.getCurrentLoginUserInfo()
+    }
+    suspend fun userSignUpCourse(user2Course: User2Course){
+        return dataSource.userSignUpCourse(user2Course)
     }
 
     suspend fun getCourseDetailByID(courseID: String): CourseInfo? {

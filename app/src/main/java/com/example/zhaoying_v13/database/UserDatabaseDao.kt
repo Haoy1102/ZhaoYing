@@ -38,8 +38,14 @@ public interface UserDatabaseDao {
     @Query("update local_user_info_table set currentLoginState=1 where userID=:key")
     suspend fun setCurrentLogin1(key: String)
 
-    @Insert
+    @Query("update local_user_info_table set currentLoginState=0")
+    suspend fun setAllLogout()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCourse(courseInfo:CourseInfo)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun userSignUpCourse(user2Course: User2Course)
 
     @Transaction
     @Query("select * from local_user_info_table where userID = :key")
@@ -47,5 +53,8 @@ public interface UserDatabaseDao {
 
     @Query("select * from local_course_info_table where courseID=:key")
     suspend fun getCourseDetailByID(key:String):CourseInfo?
+
+
+
 
 }

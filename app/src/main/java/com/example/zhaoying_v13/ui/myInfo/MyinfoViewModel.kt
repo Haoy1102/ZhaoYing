@@ -47,8 +47,13 @@ class MyinfoViewModel(
             val currentUser=getCurrentLoginUserInfo()
             Log.i("Database","getCurrentLoginUserInfo:"+currentUser.toString())
             _currentUser.value=currentUser
+//            database.insertCourse(CourseInfo())
+        }
+    }
 
-            //database.insertCourse(CourseInfo())
+    fun userLogout(){
+        viewModelScope.launch {
+            setAllLogout()
         }
     }
 
@@ -58,6 +63,12 @@ class MyinfoViewModel(
         val currentUser=database.getCurrentLoginUserInfo()
         return currentUser
     }
+
+    suspend fun setAllLogout(){
+        database.setAllLogout()
+    }
+
+
 
 //     private fun getCurrentUser() {
 //         val loginedUerList=allLoginUser.value
