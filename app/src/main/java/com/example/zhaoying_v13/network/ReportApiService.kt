@@ -50,12 +50,6 @@ interface ReportApiService {
     @POST("api/user/register")
     @Multipart
     fun userRegister(
-//        @Part("name") name:RequestBody,
-//        @Part("phone_number")phonenumber:RequestBody,
-//        @Part("password1")password1:RequestBody,
-//        @Part("password2")password2:RequestBody,
-//        @Part("gender")gender:RequestBody
-
         @PartMap params:Map<String, @JvmSuppressWildcards RequestBody>
         //@Part avatar: MultipartBody.Part?,
     ): Call<UserRegResponse>
@@ -64,8 +58,10 @@ interface ReportApiService {
     @Multipart
     fun upLoadFiles(
         @Part file: MultipartBody.Part?,
-        @Path("filename") filename:String
-    ): Call<String>?
+        @Path("filename") filename:String,
+        @Part("course")courseName:RequestBody,
+        @Part("userID")userID:RequestBody
+    ): Call<Status>
 
 
 }

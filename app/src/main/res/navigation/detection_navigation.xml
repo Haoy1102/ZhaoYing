@@ -8,5 +8,15 @@
         android:id="@+id/selectFragment"
         android:name="com.example.zhaoying_v13.ui.home.detection.SelectFragment"
         android:label="select_fragment"
-        tools:layout="@layout/select_fragment" />
+        tools:layout="@layout/select_fragment" >
+        <action
+            android:id="@+id/action_selectFragment_to_reportFragment"
+            app:destination="@id/reportFragment"
+            app:popUpTo="@id/selectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.zhaoying_v13.ui.home.detection.ReportFragment"
+        android:label="report_fragment"
+        tools:layout="@layout/report_fragment" />
 </navigation>

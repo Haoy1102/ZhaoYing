@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.database.UserWithCourses
@@ -42,6 +44,7 @@ class SelectFragment : Fragment() {
     private lateinit var imagePath: String
     private var imageState = 0
 
+
     companion object {
         fun newInstance() = SelectFragment()
     }
@@ -51,12 +54,6 @@ class SelectFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = SelectFragmentBinding.inflate(inflater, container, false)
-
-
-
-
-
-
         return binding.root
     }
 
@@ -70,7 +67,32 @@ class SelectFragment : Fragment() {
             .get(SelectViewModel::class.java)
 
         initCourseMenu()
+        selectFile()
 
+
+
+        binding.btnUploadFile.setOnClickListener {
+            Log.i("SELF_TAG", binding.courseMenuText.text.toString())
+            //Log.i("SELF_TAG", binding.courseMenu.hint.toString())
+            if (imageState == 1 && binding.courseMenuText.text.toString() != ""
+                && viewModel.currentUser.value != null
+            ) {
+                viewModel.uploadFile(imagePath, binding.courseMenuText.text.toString())
+            } else if (binding.courseMenuText.text.toString()=="") {
+                Toast.makeText(context, "选择课程后才可以上传噢", Toast.LENGTH_SHORT).show()
+            } else if (imageState == 0) {
+                Toast.makeText(context, "选择文件后才可以上传噢", Toast.LENGTH_SHORT).show()
+            } else if (viewModel.currentUser.value == null) {
+                Toast.makeText(context, "登录后才可以上传噢", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.testButton.setOnClickListener {
+            view.findNavController().navigate(R.id.action_selectFragment_to_reportFragment)
+        }
+    }
+
+    private fun selectFile() {
         binding.btnSelectFile.setOnClickListener {
             AndPermission.with(this@SelectFragment)
                 .runtime()
@@ -91,25 +113,37 @@ class SelectFragment : Fragment() {
                 })
                 .onDenied(object : Action<List<String?>?> {
                     override fun onAction(data: List<String?>?) {
-                        TODO("Not yet implemented")
+
                     }
                 })
                 .start()
         }
-
-        binding.btnUploadFile.setOnClickListener {
-            if (imageState == 1) {
-                uploadFile(imagePath)
-            } else {
-                Toast.makeText(context, "选择文件后才可以上传噢", Toast.LENGTH_LONG).show()
-            }
-        }
-
     }
 
+//    fun uploadFile(path: String, courseName: String) {
+//        val file = File(path)
+//        //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
+//        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+//        val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
+//        ReportApi.retrofitService.upLoadFiles(
+//            part, "test2.mp4", courseName, "120"
+//        )
+//            .enqueue(object : Callback<String> {
+//                override fun onResponse(call: Call<String>, response: Response<String>) {
+//                    //_status.value = response.body()
+//
+//                    Log.i("TAG", "状态码：" + response.body().toString())
+//                    Log.i("TAG", "路径：" + file.name)
+//                }
+//
+//                override fun onFailure(call: Call<String>, t: Throwable) {
+//                    //_status.value = "400"
+//                    Log.i("TAG", "错误信息：" + t.toString())
+//                }
+//            })
+//    }
 
-
-    private fun initCourseMenu(){
+    private fun initCourseMenu() {
         viewModel.courseMenuItem.observe(viewLifecycleOwner,
             Observer { it ->
                 if (it != null) {
@@ -120,13 +154,6 @@ class SelectFragment : Fragment() {
             })
     }
 
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SelectViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -147,9 +174,6 @@ class SelectFragment : Fragment() {
             c.moveToFirst()
             val columnIndex = c.getColumnIndex(filePathColumns[0])
             imagePath = c.getString(columnIndex)
-
-
-//            binding.textField.
             binding.inputTextFiled.setText(imagePath)
             Log.i("TAG", imagePath)
             imageState = 1
@@ -157,30 +181,27 @@ class SelectFragment : Fragment() {
         }
     }
 
-    private fun uploadFile(path: String) {
-        val file = File(path)
-        //TODO 修改文件类型
-        //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
-        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
-        ReportApi.retrofitService.upLoadFiles(part, file.name)?.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.i("TAG", "状态码：" + response.body().toString())
-                Log.i("TAG", "路径：" + file.name)
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.i("TAG", "错误信息：" + t.toString())
-            }
-        })
-    }
+//    private fun uploadFile(path: String) {
+//        val file = File(path)
+//        //TODO 修改文件类型
+//        //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
+//        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+//        val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
+//        ReportApi.retrofitService.upLoadFiles(part, file.name)?.enqueue(object : Callback<String> {
+//            override fun onResponse(call: Call<String>, response: Response<String>) {
+//                Log.i("TAG", "状态码：" + response.body().toString())
+//                Log.i("TAG", "路径：" + file.name)
+//            }
+//            override fun onFailure(call: Call<String>, t: Throwable) {
+//                Log.i("TAG", "错误信息：" + t.toString())
+//            }
+//        })
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 
 
 }
