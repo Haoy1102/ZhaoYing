@@ -93,6 +93,7 @@ class CourseDetailActivity : AppCompatActivity() {
 
     private fun initUI() {
         lifecycleScope.launch {
+            insertCourse()
             val courseInfo: CourseInfo? = getCourseDetailByID(courseID)
             if (courseInfo==null)
                 Log.i("SELT_TAG","CourseDetailActivity找不到正确数据")
@@ -105,6 +106,10 @@ class CourseDetailActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    suspend fun insertCourse(){
+        dataSource.insertCourse(CourseInfo())
     }
 
     suspend fun getCurrentLoginUserInfo(): UserInfo?{
