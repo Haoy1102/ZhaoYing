@@ -1,6 +1,7 @@
 package com.example.zhaoying_v13.ui.home.detection
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.database.Cursor
 import androidx.lifecycle.ViewModelProvider
@@ -66,6 +67,9 @@ class SelectFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(SelectViewModel::class.java)
 
+        //上传Loading对话框
+        val progressDialog=ProgressDialog(requireContext())
+
         initCourseMenu()
         selectFile()
 
@@ -74,9 +78,14 @@ class SelectFragment : Fragment() {
         binding.btnUploadFile.setOnClickListener {
             Log.i("SELF_TAG", binding.courseMenuText.text.toString())
             //Log.i("SELF_TAG", binding.courseMenu.hint.toString())
+
             if (imageState == 1 && binding.courseMenuText.text.toString() != ""
                 && viewModel.currentUser.value != null
             ) {
+                progressDialog.setTitle("提示")
+                progressDialog.setMessage("正在上传，请稍后.....")
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                progressDialog.show()
                 viewModel.uploadFile(imagePath, binding.courseMenuText.text.toString())
             } else if (binding.courseMenuText.text.toString()=="") {
                 Toast.makeText(context, "选择课程后才可以上传噢", Toast.LENGTH_SHORT).show()
@@ -90,6 +99,16 @@ class SelectFragment : Fragment() {
         binding.testButton.setOnClickListener {
             view.findNavController().navigate(R.id.action_selectFragment_to_reportFragment)
         }
+
+        viewModel.status.observe(viewLifecycleOwner,
+            Observer { it->
+                if (it=="204"){
+                    progressDialog.dismiss()
+                    Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
     }
 
     private fun selectFile() {

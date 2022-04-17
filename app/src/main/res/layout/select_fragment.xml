@@ -23,9 +23,17 @@
             android:id="@+id/courseMenuText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none" />
-
+            android:inputType="none"
+            />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="您报名过的所有课程"
+        app:layout_constraintStart_toStartOf="@+id/courseMenu"
+        app:layout_constraintTop_toBottomOf="@+id/courseMenu" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField"

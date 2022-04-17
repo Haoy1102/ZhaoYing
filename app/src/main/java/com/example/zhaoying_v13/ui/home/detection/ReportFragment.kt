@@ -12,6 +12,8 @@ import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.databinding.ActivityCourseDetailBinding
 import com.example.zhaoying_v13.databinding.ReportFragmentBinding
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
+import com.example.zhaoying_v13.network.ReportApi
+import com.example.zhaoying_v13.network.ReportApiService
 
 class ReportFragment : Fragment() {
 
@@ -35,21 +37,11 @@ class ReportFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
 
-        //TODO: 修改视频URL来源
-        val uri=Uri.parse("android.resource://com.example.zhaoying_v13/"+R.raw.test1)
-        binding.videoView.setVideoURI(uri)
-       // binding.videoView.setVideoPath("https://*****.MP4")
-        val mediaController = MediaController(requireContext())
-        binding.videoView.setMediaController(mediaController)
-        mediaController.setMediaPlayer(binding.videoView)
-        binding.videoView.start()
 
-//        binding.startButton.setOnClickListener{
-//            if (!binding.videoView.isPlaying){
-//                binding.videoView.start()//开始播放
-//            }
-//        }
-        // TODO: Use the ViewModel
+        //TODO: 修改视频URL来源
+        binding.webView.loadUrl(ReportApi.baseURL + "media/120/太极/VID_20220403_204544.mp4")
+
+
     }
 
 

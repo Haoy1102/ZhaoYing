@@ -72,7 +72,7 @@ class SelectViewModel(
             .enqueue(object : Callback<Status> {
                 override fun onResponse(call: Call<Status>, response: Response<Status>) {
                     _status.value = response.body()!!.status!!
-                    Log.i("TAG", "状态码：" + response.body().toString())
+                    Log.i("TAG", "状态码：" + _status.value)
                     Log.i("TAG", "路径：" + file.name)
                 }
 

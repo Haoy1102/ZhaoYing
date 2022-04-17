@@ -78,7 +78,7 @@ class MyinfoFragment : Fragment() {
                     myinfoViewModel.userLogout()
                     myinfoViewModel.updateUserState()
                     setLoginTipsOrUserName()
-                    Toast.makeText(requireContext(), "退出成功", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "退出成功",Toast.LENGTH_LONG).show()
                     true
                 }
                 R.id.versionInfo->{
