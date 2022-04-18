@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,8 +24,6 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -32,34 +31,62 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val imageButton1: ImageButton = binding.imageButton1
-        imageButton1.setOnClickListener(
+
+        init()
+        developing()
+        return binding.root
+    }
+
+    private fun init() {
+        binding.imageButton1.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_detectionActivity)
         )
-
         //太极图片点击
-        binding.imageView7.setOnClickListener{
-//            val amount="2"
-//            val bundle= bundleOf("courseID" to amount)
-//            view?.findNavController()!!.navigate(R.id.action_navigation_home_to_courseDetailActivity,bundle)
+        binding.imageView7.setOnClickListener {
             startActivity(
                 Intent(context, CourseDetailActivity::class.java)
-                .putExtra(CourseDetailActivity.COURSE_ID, "2"))
+                    .putExtra(CourseDetailActivity.COURSE_ID, "2")
+            )
         }
+    }
 
-
-
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
-        return root
+    private fun developing() {
+        binding.imageButton2.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButton3.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButton4.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButton5.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButton6.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButton7.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButton8.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageView4.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该课程暂未上架", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageView5.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该课程暂未上架", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageView6.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该课程暂未上架", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageView8.setOnClickListener {
+            Toast.makeText(requireContext(), "抱歉，该课程暂未上架", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {

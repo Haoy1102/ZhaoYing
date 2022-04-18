@@ -118,7 +118,7 @@ class SelectFragment : Fragment() {
                 //云端处理中Loading对话框
                 val progressDialog=ProgressDialog(requireContext())
                 progressDialog.setTitle("提示")
-                progressDialog.setMessage("云端正在处理，请稍后.....")
+                progressDialog.setMessage("云端正在处理，请稍候.....")
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 progressDialog.show()
                 viewModel.getPredicReport(imagePath,binding.courseMenuText.text.toString())
@@ -134,7 +134,7 @@ class SelectFragment : Fragment() {
                         Toast.makeText(context,"结果分析成功",Toast.LENGTH_SHORT).show()
                     }
                     else if (it.status=="403"){
-                        Toast.makeText(context,"分析错误，请练习管理员",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,"分析错误，请联系管理员",Toast.LENGTH_SHORT).show()
                     }
                 })
 

@@ -23,77 +23,21 @@ class MyinfoFragment : Fragment() {
     private lateinit var myinfoViewModel: MyinfoViewModel
     private var _binding: FragmentMyinfoBinding? = null
 
-    //private lateinit var currentUser:UserInfo
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         _binding = FragmentMyinfoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //Glide加载图片
-//        myinfoViewModel.report.observe(viewLifecycleOwner, Observer {
-//            val imgUri = it.imgSrcUrl.toUri().buildUpon().scheme("https").build()
-//            Glide.with(binding.imageView.context)
-//                .load(imgUri)
-//                .into(binding.imageView)
-//            binding.imageView.setImageURI(imgUri)
-//            binding.textNotifications.text=it.imgSrcUrl
-//        })
-
-        //设置
-
-
-        binding.ivAvatar.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_navigation_notifications_to_loginActivity)
-        )
-
-        binding.ivMore.setOnClickListener { v: View ->
-            showMenu(v, R.menu.myinfo_more_menu)
-        }
-
+        init()
+        developing()    //暂未开发
 
         return root
-    }
-
-    private fun showMenu(v: View, @MenuRes menuRes: Int) {
-        val popup = PopupMenu(requireContext(), v)
-        popup.menuInflater.inflate(menuRes, popup.menu)
-
-        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
-                R.id.editUserInfo -> {
-                    Toast.makeText(requireContext(), "编辑信息", Toast.LENGTH_LONG).show()
-                    true
-                }
-                R.id.logOut->{
-                    myinfoViewModel.userLogout()
-                    myinfoViewModel.updateUserState()
-                    setLoginTipsOrUserName()
-                    Toast.makeText(requireContext(), "退出成功",Toast.LENGTH_LONG).show()
-                    true
-                }
-                R.id.versionInfo->{
-                    Toast.makeText(requireContext(), "该共功能正在开发中", Toast.LENGTH_LONG).show()
-                    true
-                }
-                else -> false
-            }
-
-        }
-        popup.setOnDismissListener {
-            // Respond to popup being dismissed.
-        }
-        // Show the popup menu.
-        popup.show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -118,6 +62,61 @@ class MyinfoFragment : Fragment() {
         setLoginTipsOrUserName()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun init() {
+        binding.ivAvatar.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.action_navigation_notifications_to_loginActivity)
+        )
+        binding.ivMore.setOnClickListener { v: View ->
+            showMenu(v, R.menu.myinfo_more_menu)
+        }
+    }
+
+    private fun developing() {
+        binding.tvFavorites.setOnClickListener{
+            Toast.makeText(requireContext(),"抱歉，该功能暂未开放",Toast.LENGTH_SHORT).show()
+        }
+        binding.tvCache.setOnClickListener{
+            Toast.makeText(requireContext(),"抱歉，该功能暂未开放",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+        val popup = PopupMenu(requireContext(), v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.editUserInfo -> {
+                    Toast.makeText(requireContext(), "抱歉，该功能正在开发中", Toast.LENGTH_LONG).show()
+                    true
+                }
+                R.id.logOut -> {
+                    myinfoViewModel.userLogout()
+                    myinfoViewModel.updateUserState()
+                    setLoginTipsOrUserName()
+                    Toast.makeText(requireContext(), "退出成功", Toast.LENGTH_LONG).show()
+                    true
+                }
+                R.id.versionInfo -> {
+                    Toast.makeText(requireContext(), "抱歉，该功能正在开发中", Toast.LENGTH_LONG).show()
+                    true
+                }
+                else -> false
+            }
+
+        }
+        popup.setOnDismissListener {
+            // Respond to popup being dismissed.
+        }
+        // Show the popup menu.
+        popup.show()
+    }
+
 
     fun setLoginTipsOrUserName() {
         Log.i("Database", "1:setLoginTipsOrUserName()执行")
@@ -126,16 +125,25 @@ class MyinfoFragment : Fragment() {
                 if (it == null) {
                     binding.ivAvatar.setImageResource(R.drawable.ic_logo_black_76dp)
                     binding.tvLoginTipsOrUserName.setText("点击头像可以进行登录噢")
+                    binding.ivAvatar.setEnabled(true)
                 } else {
                     binding.tvLoginTipsOrUserName.setText(it.displayName)
                     binding.ivAvatar.setImageResource(R.mipmap.user_avatar)
+                    binding.ivAvatar.setEnabled(false)
                 }
 
             })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    //Glide加载图片
+//        myinfoViewModel.report.observe(viewLifecycleOwner, Observer {
+//            val imgUri = it.imgSrcUrl.toUri().buildUpon().scheme("https").build()
+//            Glide.with(binding.imageView.context)
+//                .load(imgUri)
+//                .into(binding.imageView)
+//            binding.imageView.setImageURI(imgUri)
+//            binding.textNotifications.text=it.imgSrcUrl
+//        })
+
+
 }
