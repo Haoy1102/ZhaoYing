@@ -11,6 +11,7 @@ import com.example.zhaoying_v13.database.CourseInfo
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
 import com.example.zhaoying_v13.database.UserWithCourses
+import com.example.zhaoying_v13.network.Report
 import com.example.zhaoying_v13.network.ReportApi
 import com.example.zhaoying_v13.network.Status
 import com.example.zhaoying_v13.ui.myInfo.login.model.UserLoginInfo
@@ -40,6 +41,11 @@ class SelectViewModel(
     private val _status = MutableLiveData<String>()
     val status: LiveData<String> = _status
 
+    private val _report = MutableLiveData<Report>()
+    val report: LiveData<Report> = _report
+
+    private var enterFrom:Int=0
+
     init {
         initCourseMenu()
     }
@@ -61,7 +67,6 @@ class SelectViewModel(
 
     fun uploadFile(path: String, courseName: String) {
         val file = File(path)
-        //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
         val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
         val courseNameBody=toRequestBody(courseName)
@@ -72,20 +77,49 @@ class SelectViewModel(
             .enqueue(object : Callback<Status> {
                 override fun onResponse(call: Call<Status>, response: Response<Status>) {
                     _status.value = response.body()!!.status!!
-                    Log.i("TAG", "状态码：" + _status.value)
-                    Log.i("TAG", "路径：" + file.name)
+                    Log.i("TAGPredict", "状态码：" + _status.value)
+                    Log.i("TAGPredict", "路径：" + file.name)
                 }
 
                 override fun onFailure(call: Call<Status>, t: Throwable) {
                     _status.value = "400"
-                    Log.i("TAG", "错误信息：" + t.toString())
+                    Log.i("TAGPredict", "错误信息：" + t.toString())
                 }
             })
     }
 
+    fun getPredicReport(path: String,courseName: String){
+        val file = File(path)
+        val userIDBody=toRequestBody(currentUser.value!!.userID)
+        val courseNameBody=toRequestBody(courseName)
+        val fileNameBody=toRequestBody(file.name)
+        ReportApi.retrofitService.getPredicReport(userIDBody,courseNameBody,fileNameBody)
+            .enqueue(object : Callback<Report> {
+                override fun onResponse(call: Call<Report>, response: Response<Report>) {
+                    _report.value=response.body()!!
+                    Log.i("TAGPredict",response.body().toString())
+                }
+                override fun onFailure(call: Call<Report>, t: Throwable) {
+                    Log.i("TAGPredict","Error:"+t.message.toString())
+                }
+            })
+
+    }
+
     private fun toRequestBody( value:String): RequestBody {
-        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), value);
+        var valueto=value
+        if(value=="太极")
+            valueto="taiji"
+        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), valueto);
         return requestBody;
+    }
+
+    fun setEnterFromSelectFragment(){
+        enterFrom=1
+    }
+
+    fun getEnterFrom():Int{
+        return enterFrom
     }
 
     suspend fun getCurrentLoginUserInfo(): UserInfo? {

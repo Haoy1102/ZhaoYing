@@ -6,8 +6,6 @@ import androidx.lifecycle.*
 import com.example.zhaoying_v13.database.CourseInfo
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
-import com.example.zhaoying_v13.network.Report
-import com.example.zhaoying_v13.network.ReportApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -22,10 +20,10 @@ class MyinfoViewModel(
     val status: LiveData<String>
         get() = _status
 
-    private val _report = MutableLiveData<Report>()
-
-    val report: LiveData<Report>
-        get() = _report
+//    private val _report = MutableLiveData<Report>()
+//
+//    val report: LiveData<Report>
+//        get() = _report
 
 
     private val _currentUser = MutableLiveData<UserInfo?>()
@@ -95,19 +93,19 @@ class MyinfoViewModel(
 //    }
 
 
-    private fun getReports() {
-        coroutineScope.launch {
-            var getReportDefferd = ReportApi.retrofitService.getProperties()
-            var listResult = getReportDefferd.await()
-            try {
-                if (listResult.size > 0) {
-                    _report.value = listResult[0]
-                }
-            } catch (e: Exception) {
-                _status.value = "Failure: ${e.message}"
-            }
-        }
-    }
+//    private fun getReports() {
+//        coroutineScope.launch {
+//            var getReportDefferd = ReportApi.retrofitService.getProperties()
+//            var listResult = getReportDefferd.await()
+//            try {
+//                if (listResult.size > 0) {
+//                    _report.value = listResult[0]
+//                }
+//            } catch (e: Exception) {
+//                _status.value = "Failure: ${e.message}"
+//            }
+//        }
+//    }
 
 
     override fun onCleared() {

@@ -4,37 +4,26 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.database.Cursor
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
-import com.example.zhaoying_v13.database.UserWithCourses
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
-import com.example.zhaoying_v13.network.ReportApi
-import com.example.zhaoying_v13.ui.myInfo.login.LoginViewModel
-import com.example.zhaoying_v13.ui.myInfo.login.LoginViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.File
 
 class SelectFragment : Fragment() {
 
@@ -46,6 +35,7 @@ class SelectFragment : Fragment() {
     private var imageState = 0
 
 
+
     companion object {
         fun newInstance() = SelectFragment()
     }
@@ -55,6 +45,7 @@ class SelectFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = SelectFragmentBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -67,14 +58,27 @@ class SelectFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(SelectViewModel::class.java)
 
-        //上传Loading对话框
-        val progressDialog=ProgressDialog(requireContext())
+
 
         initCourseMenu()
         selectFile()
+        uploadFile()
 
 
 
+
+        binding.testButton.setOnClickListener {
+            requireView().findNavController().navigate(R.id.action_selectFragment_to_reportFragment)
+
+        }
+
+
+
+    }
+
+    private fun uploadFile(){
+        //上传Loading对话框
+        val progressDialog=ProgressDialog(requireContext())
         binding.btnUploadFile.setOnClickListener {
             Log.i("SELF_TAG", binding.courseMenuText.text.toString())
             //Log.i("SELF_TAG", binding.courseMenu.hint.toString())
@@ -87,6 +91,14 @@ class SelectFragment : Fragment() {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 progressDialog.show()
                 viewModel.uploadFile(imagePath, binding.courseMenuText.text.toString())
+                viewModel.status.observe(viewLifecycleOwner,
+                    Observer { it->
+                        if (it=="204"){
+                            progressDialog.dismiss()
+                            Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show()
+                            predictReport()
+                        }
+                    })
             } else if (binding.courseMenuText.text.toString()=="") {
                 Toast.makeText(context, "选择课程后才可以上传噢", Toast.LENGTH_SHORT).show()
             } else if (imageState == 0) {
@@ -95,20 +107,40 @@ class SelectFragment : Fragment() {
                 Toast.makeText(context, "登录后才可以上传噢", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
-        binding.testButton.setOnClickListener {
-            view.findNavController().navigate(R.id.action_selectFragment_to_reportFragment)
-        }
+    private fun predictReport(){
+        //上传后弹窗
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("确认")
+            .setMessage("立即查看结果可能需要等待1分钟，点击确定以立即查看")
+            .setNegativeButton("确定") { dialog, which ->
+                //云端处理中Loading对话框
+                val progressDialog=ProgressDialog(requireContext())
+                progressDialog.setTitle("提示")
+                progressDialog.setMessage("云端正在处理，请稍后.....")
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                progressDialog.show()
+                viewModel.getPredicReport(imagePath,binding.courseMenuText.text.toString())
+                viewModel.report.observe(viewLifecycleOwner, Observer { it->
+                    if (it.status=="204"){
+                        progressDialog.dismiss()
+                        //TODO 设置Bundle
+                        val args = Bundle()
+                        args.putInt("enterFrom",0)
+                        args.putString("evaluate", it.evaluate)
+                        args.putString("url",it.url)
+                        requireView().findNavController().navigate(R.id.action_selectFragment_to_reportFragment,args)
+                        Toast.makeText(context,"结果分析成功",Toast.LENGTH_SHORT).show()
+                    }
+                    else if (it.status=="403"){
+                        Toast.makeText(context,"分析错误，请练习管理员",Toast.LENGTH_SHORT).show()
+                    }
+                })
 
-        viewModel.status.observe(viewLifecycleOwner,
-            Observer { it->
-                if (it=="204"){
-                    progressDialog.dismiss()
-                    Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show()
-                }
-
-            })
-
+            }
+            .setPositiveButton("取消",null)
+            .show()
     }
 
     private fun selectFile() {
