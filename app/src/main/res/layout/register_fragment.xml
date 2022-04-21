@@ -1,248 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:orientation="vertical"
     tools:context=".ui.myInfo.login.RegisterFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/displayNameTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/detail_RelativeLayout"
+        app:layout_anchorGravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        android:hint="昵称"
-        app:endIconMode="clear_text"
-        app:helperTextEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageAvatar"
-        app:startIconDrawable="@drawable/ic_people_fill_24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/displayNameText"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneNumberTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/displayNameTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+
+                android:hint="昵称"
+                app:endIconMode="clear_text"
+                app:helperTextEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageAvatar"
+                app:startIconDrawable="@drawable/ic_people_fill_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/displayNameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneNumberTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="@string/phoneNumberText"
+                app:counterEnabled="true"
+                app:counterMaxLength="11"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+
+                app:helperTextEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/displayNameTextField"
+                app:startIconContentDescription="账号"
+                app:startIconDrawable="@drawable/ic_telephone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumberText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="@string/passwordText"
+                app:endIconMode="password_toggle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextField"
+                app:startIconContentDescription="账号"
+                app:startIconDrawable="@drawable/ic_lock_fill_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inspectPasswordTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="确认密码"
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@+id/passwordTextField"
+                app:startIconDrawable="@drawable/ic_lock_fill_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inspectPasswordText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sexSelectTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:hint="性别"
+                app:layout_constraintEnd_toEndOf="@+id/inspectPasswordTextField"
+                app:layout_constraintHorizontal_weight="4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inspectPasswordTextField"
+                app:startIconDrawable="@drawable/ic_sex_24dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/sexSelected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bitrhTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="出生日期"
+                app:endIconDrawable="@drawable/ic_calender"
+                app:endIconMode="custom"
+                app:helperTextEnabled="true"
+
+
+                app:layout_constraintEnd_toEndOf="@+id/sexSelectTextField"
+                app:layout_constraintStart_toStartOf="@+id/sexSelectTextField"
+                app:layout_constraintTop_toBottomOf="@id/tv_optionTip"
+                app:startIconContentDescription="账号"
+                app:startIconDrawable="@drawable/ic_birthcake">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bitrhText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/heightTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:hint="身高"
+                app:helperTextEnabled="true"
+                app:layout_constraintBottom_toBottomOf="@+id/weightTextField"
+                app:layout_constraintEnd_toStartOf="@+id/weightTextField"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/weightTextField"
+                app:startIconContentDescription="账号"
+                app:startIconDrawable="@drawable/ic_people_fill_24dp"
+                app:suffixText="cm">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/heightText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/weightTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+
+                android:hint="体重"
+                app:helperTextEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/heightTextField"
+                app:layout_constraintTop_toBottomOf="@+id/bitrhTextField"
+                app:startIconContentDescription="账号"
+                app:startIconDrawable="@drawable/ic_people_fill_24dp"
+                app:suffixText="kg">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/weightText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/ic_launcher_foreground"
+                app:civ_border_color="#cdcdcd"
+                app:civ_border_width="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="112dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_optionTip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="以下内容为可选"
+                app:layout_constraintStart_toStartOf="@+id/sexSelectTextField"
+                app:layout_constraintTop_toBottomOf="@+id/sexSelectTextField" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/detail_RelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/phoneNumberText"
-        app:counterEnabled="true"
-        app:counterMaxLength="11"
-        app:endIconMode="clear_text"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:paddingBottom="16dp">
 
-        app:helperTextEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/displayNameTextField"
-        app:startIconContentDescription="账号"
-        app:startIconDrawable="@drawable/ic_telephone">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneNumberText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/passwordText"
-        app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextField"
-        app:startIconContentDescription="账号"
-        app:startIconDrawable="@drawable/ic_lock_fill_24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordText"
+        <Button
+            android:id="@+id/regiButton"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inspectPasswordTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="确认密码"
-        app:endIconMode="password_toggle"
-        app:errorEnabled="true"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/passwordTextField"
-        app:startIconDrawable="@drawable/ic_lock_fill_24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inspectPasswordText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/sexSelectTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:hint="性别"
-        app:layout_constraintEnd_toStartOf="@+id/bitrhTextField"
-        app:layout_constraintHorizontal_weight="4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inspectPasswordTextField"
-        app:startIconDrawable="@drawable/ic_sex_24dp">
-
-        <AutoCompleteTextView
-            android:id="@+id/sexSelected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/bitrhTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="32dp"
-        android:hint="出生日期"
-        app:endIconDrawable="@drawable/ic_calender"
-        app:endIconMode="custom"
-        app:helperTextEnabled="true"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="6"
-
-        app:layout_constraintStart_toEndOf="@+id/sexSelectTextField"
-        app:layout_constraintTop_toTopOf="@+id/sexSelectTextField"
-        app:startIconContentDescription="账号"
-        app:startIconDrawable="@drawable/ic_birthcake">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/bitrhText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/heightTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="2dp"
-        android:hint="身高"
-        app:suffixText="cm"
-        app:helperTextEnabled="true"
-        app:layout_constraintEnd_toStartOf="@+id/weightTextField"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sexSelectTextField"
-        app:startIconContentDescription="账号"
-        app:startIconDrawable="@drawable/ic_people_fill_24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/heightText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/weightTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:suffixText="kg"
-
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="32dp"
-        android:hint="体重"
-        app:helperTextEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/heightTextField"
-        app:layout_constraintTop_toBottomOf="@+id/sexSelectTextField"
-        app:startIconContentDescription="账号"
-        app:startIconDrawable="@drawable/ic_people_fill_24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/weightText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/regiButton"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:paddingTop="12sp"
-        android:paddingBottom="12sp"
-
-        android:textSize="18sp"
-        android:text="立即注册"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weightTextField" />
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:enabled="true"
+            android:text="立即注册"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
 
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/ic_launcher_foreground"
-        app:civ_border_color="#cdcdcd"
-        app:civ_border_width="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_width="112dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -125,7 +125,6 @@ class SelectFragment : Fragment() {
                 viewModel.report.observe(viewLifecycleOwner, Observer { it->
                     if (it.status=="204"){
                         progressDialog.dismiss()
-                        //TODO 设置Bundle
                         val args = Bundle()
                         args.putInt("enterFrom",0)
                         args.putString("evaluate", it.evaluate)
@@ -171,29 +170,6 @@ class SelectFragment : Fragment() {
         }
     }
 
-//    fun uploadFile(path: String, courseName: String) {
-//        val file = File(path)
-//        //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
-//        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-//        val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
-//        ReportApi.retrofitService.upLoadFiles(
-//            part, "test2.mp4", courseName, "120"
-//        )
-//            .enqueue(object : Callback<String> {
-//                override fun onResponse(call: Call<String>, response: Response<String>) {
-//                    //_status.value = response.body()
-//
-//                    Log.i("TAG", "状态码：" + response.body().toString())
-//                    Log.i("TAG", "路径：" + file.name)
-//                }
-//
-//                override fun onFailure(call: Call<String>, t: Throwable) {
-//                    //_status.value = "400"
-//                    Log.i("TAG", "错误信息：" + t.toString())
-//                }
-//            })
-//    }
-
     private fun initCourseMenu() {
         viewModel.courseMenuItem.observe(viewLifecycleOwner,
             Observer { it ->
@@ -232,22 +208,6 @@ class SelectFragment : Fragment() {
         }
     }
 
-//    private fun uploadFile(path: String) {
-//        val file = File(path)
-//        //TODO 修改文件类型
-//        //val phonenumberBody=RequestBody.create(MediaType.parse("multipart/form-data"), "111")
-//        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-//        val part = MultipartBody.Part.createFormData("file", file.name, requestBody)
-//        ReportApi.retrofitService.upLoadFiles(part, file.name)?.enqueue(object : Callback<String> {
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                Log.i("TAG", "状态码：" + response.body().toString())
-//                Log.i("TAG", "路径：" + file.name)
-//            }
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                Log.i("TAG", "错误信息：" + t.toString())
-//            }
-//        })
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

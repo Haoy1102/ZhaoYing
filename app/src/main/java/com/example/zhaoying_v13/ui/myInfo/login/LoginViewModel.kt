@@ -38,7 +38,6 @@ class LoginViewModel(
         //val result = loginRepository.login(phonenumber, password)
         //登陆操作
 
-        // TODO: handle loggedInUser authentication 发送网络请求
         val phonenumberBody: RequestBody =
             RequestBody.create(MediaType.parse("multipart/form-data"), phonenumber)
         val passwordBody: RequestBody =

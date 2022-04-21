@@ -1,18 +1,20 @@
 package com.example.zhaoying_v13.ui.myInfo.login
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.RegisterFragmentBinding
@@ -33,6 +35,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,6 +53,19 @@ class RegisterFragment : Fragment() {
         selectDate()
 
 
+//设置输入检测
+        binding.root.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_UP -> {
+                    if (inputEmptyChecked()) {
+                        binding.regiButton.setEnabled(true)
+                    }
+                }
+            }
+            true
+        }
+
+
         return binding.root
     }
 
@@ -63,43 +79,58 @@ class RegisterFragment : Fragment() {
         registerViewModel = ViewModelProvider(this, viewModelFactory)
             .get(RegisterViewModel::class.java)
 
-        //UserViewModel
+
+        //设置button有效
+        setRegButton()
+
+
+
+
+
 
         registerViewModel.registerUser.observe(viewLifecycleOwner,
             Observer { registerUser ->
                 registerUser ?: return@Observer
                 binding.loading.visibility = View.GONE
-                if (registerUser.status=="200"){
-                    Log.i("SELF_TAG","loggedInUser.status==\"200\"")
+                if (registerUser.status == "200") {
+                    Log.i("SELF_TAG", "loggedInUser.status==\"200\"")
                     updateUiWithUser(registerViewModel.registerUser.value!!)
                     updateDatabaseWithUser(registerUser)
                     requireActivity().finish()
                 }
-                if (registerUser.status=="A400")
+                if (registerUser.status == "A400")
                     showLoginFailed("用户名未填")
-                if (registerUser.status=="B400")
+                if (registerUser.status == "B400")
                     showLoginFailed("两次密码输入不同")
-                if (registerUser.status=="C400")
+                if (registerUser.status == "C400")
                     showLoginFailed("该手机号已被注册")
             })
 
 
         binding.regiButton.setOnClickListener {
-            //loadingBar显示
-            binding.loading.visibility = View.VISIBLE
-            val userInfo=RegisterUser(
-                null,
-                binding.phoneNumberText.text.toString(),
-                binding.passwordText.text.toString(),
-                binding.displayNameText.text.toString(),
-                binding.sexSelected.text.toString(),
-               binding.heightText.text.toString(),
-                binding.weightText.text.toString(),
-                binding.bitrhText.text.toString(),
-                null,null,null
-            )
-            registerViewModel.register(userInfo)
+            if (inputCorrectChecked()&&inputEmptyChecked()) {
+                //loadingBar显示
+                binding.loading.visibility = View.VISIBLE
+                val userInfo = RegisterUser(
+                    null,
+                    binding.phoneNumberText.text.toString(),
+                    binding.passwordText.text.toString(),
+                    binding.displayNameText.text.toString(),
+                    binding.sexSelected.text.toString(),
+                    binding.heightText.text.toString(),
+                    binding.weightText.text.toString(),
+                    binding.bitrhText.text.toString(),
+                    null, null, null
+                )
+                registerViewModel.register(userInfo)
+            }
         }
+
+    }
+
+
+    private fun setRegButton() {
+
     }
 
     private fun updateUiWithUser(registerUser: RegisterUser) {
@@ -109,7 +140,7 @@ class RegisterFragment : Fragment() {
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
-    private fun updateDatabaseWithUser(registerUser: RegisterUser){
+    private fun updateDatabaseWithUser(registerUser: RegisterUser) {
         registerViewModel.updateDatabaseWithUser(registerUser)
     }
 
@@ -122,25 +153,27 @@ class RegisterFragment : Fragment() {
         binding.inspectPasswordText.addTextChangedListener(
             object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    Log.d("DASD","1")
+                    Log.d("DASD", "1")
                 }
+
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    Log.d("DASD","2")
+                    Log.d("DASD", "2")
                 }
+
                 override fun afterTextChanged(p0: Editable?) {
-                    var password:String=binding.passwordText.text.toString()
-                    var inspextPassword:String=binding.inspectPasswordText.text.toString()
-                    if (password==inspextPassword){
-                        binding.inspectPasswordTextField.error =null
-                    } else{
-                        binding.inspectPasswordTextField.error ="两次密码不一致"
+                    var password: String = binding.passwordText.text.toString()
+                    var inspextPassword: String = binding.inspectPasswordText.text.toString()
+                    if (password == inspextPassword) {
+                        binding.inspectPasswordTextField.error = null
+                    } else {
+                        binding.inspectPasswordTextField.error = "两次密码不一致"
                     }
                 }
             }
         )
     }
 
-    fun selectDate(){
+    fun selectDate() {
         binding.bitrhTextField.setEndIconOnClickListener {
             val datePicker =
                 MaterialDatePicker.Builder.datePicker()
@@ -165,6 +198,53 @@ class RegisterFragment : Fragment() {
         return sd.format(date)
     }
 
+    private fun inputEmptyChecked(): Boolean {
+        var status = true;
+        if (binding.displayNameText.text.toString() == "") {
+            status = false
+            binding.displayNameTextField.error = "请输入昵称"
+        }else{
+            binding.displayNameTextField.error = null
+        }
+
+        if (binding.phoneNumberText.text.toString() == "") {
+            status = false
+            binding.phoneNumberTextField.error = "请输入手机号码"
+        }else{
+            binding.phoneNumberTextField.error = null
+        }
+
+        if (binding.passwordText.text.toString() == "") {
+            status = false
+            binding.passwordTextField.error = "请输入密码"
+        }else{
+            binding.passwordTextField.error = null
+        }
+        if (binding.sexSelected.text.toString() == "") {
+            status = false
+            binding.sexSelectTextField.error = "请选择性别"
+        }else{
+            binding.sexSelectTextField.error = null
+        }
+        return status
+    }
+
+    private fun inputCorrectChecked(): Boolean {
+        var status = true;
+        if (binding.phoneNumberText.text.toString().length != 11) {
+            status = false
+            binding.phoneNumberTextField.error = "手机号码尾数不正确"
+        }else{
+            binding.phoneNumberTextField.error = null
+        }
+        if (binding.passwordText.text.toString().length < 6) {
+            status = false
+            binding.passwordTextField.error = "密码小于6位"
+        }else{
+            binding.passwordTextField.error = null
+        }
+        return status
+    }
 
 }
 
