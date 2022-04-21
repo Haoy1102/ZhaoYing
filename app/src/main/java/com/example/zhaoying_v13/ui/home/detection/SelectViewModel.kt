@@ -44,6 +44,9 @@ class SelectViewModel(
     private val _report = MutableLiveData<Report>()
     val report: LiveData<Report> = _report
 
+    private val _canPredict = MutableLiveData<Boolean>()
+    val canPredict: LiveData<Boolean> = _canPredict
+
     private var enterFrom:Int=0
 
     init {
@@ -77,12 +80,14 @@ class SelectViewModel(
             .enqueue(object : Callback<Status> {
                 override fun onResponse(call: Call<Status>, response: Response<Status>) {
                     _status.value = response.body()!!.status!!
+                    _canPredict.value=true
                     Log.i("TAGPredict", "状态码：" + _status.value)
                     Log.i("TAGPredict", "路径：" + file.name)
                 }
 
                 override fun onFailure(call: Call<Status>, t: Throwable) {
-                    _status.value = "400"
+                    _canPredict.value=false
+                    _status.value = "408"
                     Log.i("TAGPredict", "错误信息：" + t.toString())
                 }
             })
@@ -100,6 +105,7 @@ class SelectViewModel(
                     Log.i("TAGPredict",response.body().toString())
                 }
                 override fun onFailure(call: Call<Report>, t: Throwable) {
+                    _report.value=Report("408")
                     Log.i("TAGPredict","Error:"+t.message.toString())
                 }
             })

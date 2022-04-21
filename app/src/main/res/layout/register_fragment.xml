@@ -261,7 +261,9 @@
             android:layout_marginEnd="32dp"
             android:enabled="true"
             android:text="立即注册"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:paddingTop="14sp"
+            android:paddingBottom="14sp" />
     </RelativeLayout>
 
 

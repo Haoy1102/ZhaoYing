@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -53,18 +54,18 @@ class LoginFragment : Fragment() {
         val passwordEditText = binding.password
         val loginButton = binding.loginButton
         val loadingProgressBar = binding.loading
-        val registerText=binding.textRegister
+        val registerText = binding.textRegister
 
         loginViewModel.loggedInUser.observe(viewLifecycleOwner,
             Observer { loggedInUser ->
                 loggedInUser ?: return@Observer
                 loadingProgressBar.visibility = View.GONE
-                if (loggedInUser.status=="200"){
-                    Log.i("SLEF_TAG","loggedInUser.status==\"200\"")
+                if (loggedInUser.status == "200") {
+                    Log.i("SLEF_TAG", "loggedInUser.status==\"200\"")
                     updateUiWithUser(loggedInUser)
                     //保证程序结束时job已经完成
                     lifecycleScope.launch {
-                        val job=launch() {
+                        val job = launch() {
                             loginViewModel.updateDatabaseWithUser(loggedInUser)
                         }
                         job.join()
@@ -72,22 +73,32 @@ class LoginFragment : Fragment() {
                     }
 
                 }
-                if (loggedInUser.status=="B404")
+                if (loggedInUser.status == "B404")
                     showLoginFailed("密码不正确")
-                if (loggedInUser.status=="A404")
+                if (loggedInUser.status == "A404")
                     showLoginFailed("账户不存在")
             })
 
+        loginViewModel.status.observe(viewLifecycleOwner,
+            Observer { it ->
+                if (it=="408"){
+                    loadingProgressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "网络错误,请检查网络连接", Toast.LENGTH_SHORT).show()
+                }
+            })
+
         loginButton.setOnClickListener {
-            //loadingBar显示
-            loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(
-                usernameEditText.text.toString(),
-                passwordEditText.text.toString()
-            )
+            if (inputEmptyChecked()&&inputCorrectChecked()){
+                //loadingBar显示
+                loadingProgressBar.visibility = View.VISIBLE
+                loginViewModel.login(
+                    usernameEditText.text.toString(),
+                    passwordEditText.text.toString()
+                )
+            }
         }
         //跳转注册界面
-        binding.textRegister.setOnClickListener{
+        binding.textRegister.setOnClickListener {
             view.findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
@@ -102,10 +113,45 @@ class LoginFragment : Fragment() {
     }
 
 
-
     private fun showLoginFailed(errorString: String) {
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun inputEmptyChecked(): Boolean {
+        var status = true;
+        if (binding.phoneNumber.text.toString() == "") {
+            status = false
+            binding.phoneNumberTextField.error = "请输入手机号码"
+        }else{
+            binding.phoneNumberTextField.error = null
+        }
+
+        if (binding.password.text.toString() == "") {
+            status = false
+            binding.passwordTextField.error = "请输入密码"
+        }else{
+            binding.passwordTextField.error = null
+        }
+
+        return status
+    }
+
+    private fun inputCorrectChecked(): Boolean {
+        var status = true;
+        if (binding.phoneNumber.text.toString().length != 11) {
+            status = false
+            binding.phoneNumberTextField.error = "手机号码尾数不正确"
+        }else{
+            binding.phoneNumberTextField.error = null
+        }
+        if (binding.password.text.toString().length < 6) {
+            status = false
+            binding.passwordTextField.error = "密码小于6位"
+        }else{
+            binding.passwordTextField.error = null
+        }
+        return status
     }
 
     override fun onDestroyView() {

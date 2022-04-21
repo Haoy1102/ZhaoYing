@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
@@ -29,6 +31,9 @@ class LoginViewModel(
 
     private val _loggedInUser = MutableLiveData<UserLoginInfo>()
     val loggedInUser: LiveData<UserLoginInfo> = _loggedInUser
+
+    private val _status = MutableLiveData<String>()
+    val status: LiveData<String> = _status
 
 //    private val _loginResult = MutableLiveData<LoginResult>()
 //    val loginResult: LiveData<LoginResult> = _loginResult
@@ -60,8 +65,6 @@ class LoginViewModel(
                             _loggedInUser.value = UserLoginInfo("200",
                                 info.body()!!.userId!!,
                                 info.body()!!.displayName)
-//                        _loggedInUser.value!!.userId = response.body()!!.id!!
-//                        _loggedInUser.value!!.status = "200"
                             Log.i("SELF_TAG", "status:" + _loggedInUser.value!!.status)
                         } else if (info.body()!!.status == "B404") {
                             //密码不正确
@@ -75,7 +78,8 @@ class LoginViewModel(
                     }
 
                     override fun onFailure(call: Call<UserLoginInfo>, t: Throwable) {
-                        Log.i("SELF_TAG", "onFailure:" + t.message)
+                        _status.value="408"
+                        Log.i("SELF_TAG", "网络错误:" + t.message.toString())
                     }
                 })
         }catch (e:Exception){

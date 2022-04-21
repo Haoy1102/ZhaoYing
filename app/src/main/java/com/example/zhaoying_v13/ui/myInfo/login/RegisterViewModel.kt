@@ -88,8 +88,8 @@ class RegisterViewModel(
                 }
 
                 override fun onFailure(call: Call<UserRegResponse>, t: Throwable) {
-                    //400 网络错误
-                    _registerUser.value = RegisterUser("400")
+                    //408 网络错误
+                    _registerUser.value = RegisterUser("408")
                     Log.i("SELF_TAG", t.message.toString())
                 }
             })

@@ -35,7 +35,6 @@ class SelectFragment : Fragment() {
     private var imageState = 0
 
 
-
     companion object {
         fun newInstance() = SelectFragment()
     }
@@ -59,115 +58,124 @@ class SelectFragment : Fragment() {
             .get(SelectViewModel::class.java)
 
 
-
         initCourseMenu()
-        selectFile()
-        uploadFile()
 
-
-
-
-        binding.testButton.setOnClickListener {
-            requireView().findNavController().navigate(R.id.action_selectFragment_to_reportFragment)
-
+        binding.tvfieldFileName.setEndIconOnClickListener {
+            selectFile()
         }
 
-
-
-    }
-
-    private fun uploadFile(){
-        //上传Loading对话框
-        val progressDialog=ProgressDialog(requireContext())
         binding.btnUploadFile.setOnClickListener {
-            Log.i("SELF_TAG", binding.courseMenuText.text.toString())
-            //Log.i("SELF_TAG", binding.courseMenu.hint.toString())
-
-            if (imageState == 1 && binding.courseMenuText.text.toString() != ""
-                && viewModel.currentUser.value != null
-            ) {
-                progressDialog.setTitle("提示")
-                progressDialog.setMessage("正在上传，请稍后.....")
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-                progressDialog.show()
-                viewModel.uploadFile(imagePath, binding.courseMenuText.text.toString())
-                viewModel.status.observe(viewLifecycleOwner,
-                    Observer { it->
-                        if (it=="204"){
-                            progressDialog.dismiss()
-                            Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show()
-                            predictReport()
-                        }
-                    })
-            } else if (binding.courseMenuText.text.toString()=="") {
-                Toast.makeText(context, "选择课程后才可以上传噢", Toast.LENGTH_SHORT).show()
-            } else if (imageState == 0) {
-                Toast.makeText(context, "选择文件后才可以上传噢", Toast.LENGTH_SHORT).show()
-            } else if (viewModel.currentUser.value == null) {
-                Toast.makeText(context, "登录后才可以上传噢", Toast.LENGTH_SHORT).show()
-            }
+            uploadFile()
         }
+
+        viewModel.canPredict.observe(viewLifecycleOwner, Observer { it ->
+            if (it == true)
+                predictReport()
+        })
+
+        binding.btnToResult.setOnClickListener {
+            predictReport()
+        }
+
     }
 
-    private fun predictReport(){
+    private fun uploadFile() {
+        //上传Loading对话框
+        val progressDialog = ProgressDialog(requireContext())
+        if (imageState == 1 && binding.courseMenuText.text.toString() != ""
+            && viewModel.currentUser.value != null
+        ) {
+            progressDialog.setTitle("提示")
+            progressDialog.setMessage("正在上传，请稍后.....")
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            progressDialog.show()
+            viewModel.uploadFile(imagePath, binding.courseMenuText.text.toString())
+            viewModel.status.observe(viewLifecycleOwner,
+                Observer { it ->
+                    if (it == "204") {
+                        progressDialog.dismiss()
+                        Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show()
+                        binding.btnUploadFile.visibility = View.INVISIBLE
+                        binding.btnToResult.visibility = View.VISIBLE
+                        binding.tvUploadFinish.visibility=View.VISIBLE
+                        return@Observer
+                    }
+                    if (it == "408") {
+                        progressDialog.dismiss()
+                        Toast.makeText(context, "网络错误，请检查网络连接", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        } else if (binding.courseMenuText.text.toString() == "") {
+            Toast.makeText(context, "选择课程后才可以上传噢", Toast.LENGTH_SHORT).show()
+        } else if (imageState == 0) {
+            Toast.makeText(context, "选择文件后才可以上传噢", Toast.LENGTH_SHORT).show()
+        } else if (viewModel.currentUser.value == null) {
+            Toast.makeText(context, "登录后才可以上传噢", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun predictReport() {
+
         //上传后弹窗
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("确认")
             .setMessage("立即查看结果可能需要等待1分钟，点击确定以立即查看")
             .setNegativeButton("确定") { dialog, which ->
                 //云端处理中Loading对话框
-                val progressDialog=ProgressDialog(requireContext())
+                val progressDialog = ProgressDialog(requireContext())
                 progressDialog.setTitle("提示")
                 progressDialog.setMessage("云端正在处理，请稍候.....")
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 progressDialog.show()
-                viewModel.getPredicReport(imagePath,binding.courseMenuText.text.toString())
-                viewModel.report.observe(viewLifecycleOwner, Observer { it->
-                    if (it.status=="204"){
+                viewModel.getPredicReport(imagePath, binding.courseMenuText.text.toString())
+                viewModel.report.observe(viewLifecycleOwner, Observer { it ->
+                    if (it.status == "204") {
                         progressDialog.dismiss()
                         val args = Bundle()
-                        args.putInt("enterFrom",0)
+                        args.putInt("enterFrom", 0)
                         args.putString("evaluate", it.evaluate)
-                        args.putString("url",it.url)
-                        requireView().findNavController().navigate(R.id.action_selectFragment_to_reportFragment,args)
-                        Toast.makeText(context,"结果分析成功",Toast.LENGTH_SHORT).show()
-                    }
-                    else if (it.status=="403"){
-                        Toast.makeText(context,"分析错误，请联系管理员",Toast.LENGTH_SHORT).show()
+                        args.putString("url", it.url)
+                        requireView().findNavController()
+                            .navigate(R.id.action_selectFragment_to_reportFragment, args)
+                        Toast.makeText(context, "结果分析成功", Toast.LENGTH_SHORT).show()
+                    } else if (it.status == "403") {
+                        Toast.makeText(context, "分析错误，请联系管理员", Toast.LENGTH_SHORT).show()
+                    } else if (it.status == "408") {
+                        Toast.makeText(context, "网络错误，请检查网络连接", Toast.LENGTH_SHORT).show()
                     }
                 })
 
             }
-            .setPositiveButton("取消",null)
+            .setPositiveButton("取消", null)
             .show()
     }
 
     private fun selectFile() {
-        binding.btnSelectFile.setOnClickListener {
-            AndPermission.with(this@SelectFragment)
-                .runtime()
-                .permission(
-                    Permission.WRITE_EXTERNAL_STORAGE,
-                    Permission.READ_EXTERNAL_STORAGE
-                )
-                .onGranted(object : Action<List<String?>?> {
-                    override fun onAction(data: List<String?>?) {
-                        // 申请的权限全部允许
-                        //调用相册
-                        val intent = Intent(
-                            Intent.ACTION_PICK,
-                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                        )
-                        startActivityForResult(intent, 1)
-                    }
-                })
-                .onDenied(object : Action<List<String?>?> {
-                    override fun onAction(data: List<String?>?) {
+        AndPermission.with(this@SelectFragment)
+            .runtime()
+            .permission(
+                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.READ_EXTERNAL_STORAGE
+            )
+            .onGranted(object : Action<List<String?>?> {
+                override fun onAction(data: List<String?>?) {
+                    // 申请的权限全部允许
+                    //调用相册
+                    val intent = Intent(
+                        Intent.ACTION_PICK,
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                    )
+                    startActivityForResult(intent, 1)
+                }
+            })
+            .onDenied(object : Action<List<String?>?> {
+                override fun onAction(data: List<String?>?) {
 
-                    }
-                })
-                .start()
-        }
+                }
+            })
+            .start()
+
     }
 
     private fun initCourseMenu() {
@@ -201,7 +209,7 @@ class SelectFragment : Fragment() {
             c.moveToFirst()
             val columnIndex = c.getColumnIndex(filePathColumns[0])
             imagePath = c.getString(columnIndex)
-            binding.inputTextFiled.setText(imagePath)
+            binding.tvFileName.setText(imagePath)
             Log.i("TAG", imagePath)
             imageState = 1
             c.close()

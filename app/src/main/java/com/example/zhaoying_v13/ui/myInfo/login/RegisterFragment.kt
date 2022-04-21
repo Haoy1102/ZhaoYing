@@ -35,36 +35,13 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = RegisterFragmentBinding.inflate(inflater, container, false)
 
-        //选择性别
-        val items = listOf("男", "女")
-        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        (binding.sexSelectTextField.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-
-        //密码检测
-        inspectPassword()
-        //选择日期 存储在birthday
-        selectDate()
-
-
-//设置输入检测
-        binding.root.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_UP -> {
-                    if (inputEmptyChecked()) {
-                        binding.regiButton.setEnabled(true)
-                    }
-                }
-            }
-            true
-        }
-
+        init()
 
         return binding.root
     }
@@ -78,14 +55,6 @@ class RegisterFragment : Fragment() {
         val viewModelFactory = RegisterViewModelFactory(dataSource, application)
         registerViewModel = ViewModelProvider(this, viewModelFactory)
             .get(RegisterViewModel::class.java)
-
-
-        //设置button有效
-        setRegButton()
-
-
-
-
 
 
         registerViewModel.registerUser.observe(viewLifecycleOwner,
@@ -104,6 +73,9 @@ class RegisterFragment : Fragment() {
                     showLoginFailed("两次密码输入不同")
                 if (registerUser.status == "C400")
                     showLoginFailed("该手机号已被注册")
+                if (registerUser.status=="408"){
+                    showLoginFailed("网络错误，请检查网络连接")
+                }
             })
 
 
@@ -128,16 +100,22 @@ class RegisterFragment : Fragment() {
 
     }
 
+private fun init(){
+    //选择性别
+    val items = listOf("男", "女")
+    val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+    (binding.sexSelectTextField.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 
-    private fun setRegButton() {
+    //密码检测
+    inspectPassword()
+    //选择日期 存储在birthday
+    selectDate()
 
-    }
+}
 
     private fun updateUiWithUser(registerUser: RegisterUser) {
         val welcome = getString(R.string.welcome) + registerUser.displayName
-        // TODO : initiate successful logged in experience
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), welcome, Toast.LENGTH_LONG).show()
     }
 
     private fun updateDatabaseWithUser(registerUser: RegisterUser) {
@@ -145,8 +123,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun showLoginFailed(errorString: String) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), errorString, Toast.LENGTH_LONG).show()
     }
 
     fun inspectPassword() {
