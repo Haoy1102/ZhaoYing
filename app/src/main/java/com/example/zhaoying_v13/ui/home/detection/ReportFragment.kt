@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ class ReportFragment : Fragment() {
             binding.tvReportDetail.setText(arguments?.getString("evaluate"))
             val videoURL=arguments?.getString("url")!!
             binding.webView.loadUrl(ReportApi.baseURL+"media/"+videoURL)
+            Log.i("TAGURL",ReportApi.baseURL+"media/"+videoURL)
         }
 
 

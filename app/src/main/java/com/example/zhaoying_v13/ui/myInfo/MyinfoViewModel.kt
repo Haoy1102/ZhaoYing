@@ -6,10 +6,7 @@ import androidx.lifecycle.*
 import com.example.zhaoying_v13.database.CourseInfo
 import com.example.zhaoying_v13.database.UserDatabaseDao
 import com.example.zhaoying_v13.database.UserInfo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MyinfoViewModel(
     val database: UserDatabaseDao,
@@ -29,15 +26,27 @@ class MyinfoViewModel(
     private val _currentUser = MutableLiveData<UserInfo?>()
     val currentUser: LiveData<UserInfo?> = _currentUser
 
-//    private val allLoginUser=database.getAllUser()
-
-    //private var currentUserNum = database.getCurrentLoginUserNum()
-
     private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
 
     init {
         updateUserState()
+    }
+
+    fun userLogout() {
+        //保证协程执行顺序
+        viewModelScope.launch {
+            val job1=launch(start = CoroutineStart.LAZY) {
+//                delay(2000)
+//                println("开始执行:${System.currentTimeMillis()}")
+                setAllLogout()
+            }
+            val job2=launch(start = CoroutineStart.LAZY){
+                updateUserState()
+            }
+            job1.join()
+            job2.join()
+        }
     }
 
     fun updateUserState() {
@@ -46,12 +55,6 @@ class MyinfoViewModel(
             Log.i("Database", "getCurrentLoginUserInfo:" + currentUser.toString())
             _currentUser.value = currentUser
 //            database.insertCourse(CourseInfo())
-        }
-    }
-
-    fun userLogout() {
-        viewModelScope.launch {
-            setAllLogout()
         }
     }
 

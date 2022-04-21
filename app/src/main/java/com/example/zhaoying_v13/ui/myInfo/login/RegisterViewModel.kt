@@ -30,24 +30,24 @@ class RegisterViewModel(
 //    private val _regStatus = MutableLiveData<String>()
 //    val regStatus: LiveData<String> = _regStatus
 
-    fun register(userInfo:RegisterUser){
-        val params= HashMap<String, RequestBody>()
+    fun register(userInfo: RegisterUser) {
+        val params = HashMap<String, RequestBody>()
 
         params["phone_number"] = toRequestBody(userInfo.phone_number!!)
         params["password1"] = toRequestBody(userInfo.password!!)
         params["password2"] = toRequestBody(userInfo.password!!)
         params["name"] = toRequestBody(userInfo.displayName!!)
         params["gender"] = toRequestBody(userInfo.gender!!)
-        if (userInfo.birthday!=null)
-        params["birthday"] = toRequestBody(userInfo.birthday)
-        if (userInfo.height!=null)
+        if (userInfo.birthday != null)
+            params["birthday"] = toRequestBody(userInfo.birthday)
+        if (userInfo.height != null)
             params["height"] = toRequestBody(userInfo.height)
-        if (userInfo.weight!=null)
+        if (userInfo.weight != null)
             params["weight"] = toRequestBody(userInfo.weight)
-        if (userInfo.idcard_number!=null)
-        params["idcard_number"] = toRequestBody(userInfo.idcard_number)
-        if (userInfo.hobbies!=null)
-        params["hobbies"] = toRequestBody(userInfo.hobbies)
+        if (userInfo.idcard_number != null)
+            params["idcard_number"] = toRequestBody(userInfo.idcard_number)
+        if (userInfo.hobbies != null)
+            params["hobbies"] = toRequestBody(userInfo.hobbies)
 
         //头像
 //        if (userInfo.avatar!=null)
@@ -60,10 +60,10 @@ class RegisterViewModel(
                     call: Call<UserRegResponse>,
                     response: Response<UserRegResponse>
                 ) {
-                    Log.i("SELF_TAG",response.body().toString())
-                    if (response.body()!!.status=="200"){
-                        Log.i("SELF_TAG","regStatus.value=\"200\"")
-                        _registerUser.value=RegisterUser(
+                    Log.i("SELF_TAG", response.body().toString())
+                    if (response.body()!!.status == "200") {
+                        Log.i("SELF_TAG", "regStatus.value=\"200\"")
+                        _registerUser.value = RegisterUser(
                             response.body()!!.status,
                             response.body()!!.phone_number!!,
                             response.body()!!.password!!,
@@ -74,27 +74,28 @@ class RegisterViewModel(
                             response.body()!!.birthday,
                             response.body()!!.hobbies,
                             response.body()!!.idcard_number,
-                            null,response.body()!!.id
+                            null, response.body()!!.id
                         )
                     }
                     //用户名未填
-                    else if(response.body()!!.status=="A400"){
-                        _registerUser.value=RegisterUser(response.body()!!.status)
+                    else if (response.body()!!.status == "A400") {
+                        _registerUser.value = RegisterUser(response.body()!!.status)
                     }
                     //用户已经注册
-                    else if (response.body()!!.status=="C400"){
-                        _registerUser.value=RegisterUser(response.body()!!.status)
+                    else if (response.body()!!.status == "C400") {
+                        _registerUser.value = RegisterUser(response.body()!!.status)
                     }
                 }
+
                 override fun onFailure(call: Call<UserRegResponse>, t: Throwable) {
                     //400 网络错误
-                    _registerUser.value=RegisterUser("400")
-                    Log.i("SELF_TAG",t.message.toString())
+                    _registerUser.value = RegisterUser("400")
+                    Log.i("SELF_TAG", t.message.toString())
                 }
             })
     }
 
-    private fun toRequestBody( value:String): RequestBody {
+    private fun toRequestBody(value: String): RequestBody {
         val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), value);
         return requestBody;
     }

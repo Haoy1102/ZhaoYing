@@ -20,7 +20,12 @@ import java.util.concurrent.TimeUnit
 //192.168.0.100
 //110.40.185.43
 //10.135.43.31
+//202.196.117.145
+//192.168.109.247
+
+
 private const val BASE_URL = "http://192.168.109.247:8000/"
+
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
