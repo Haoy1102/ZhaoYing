@@ -18,6 +18,10 @@
             android:id="@+id/action_navigation_home_to_courseDetailActivity"
             app:destination="@id/courseDetailActivity"
             app:popUpTo="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_home_to_cameraDecActivity"
+            app:destination="@id/cameraDecActivity"
+            app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -53,4 +57,8 @@
         android:label="activity_course_detail"
         tools:layout="@layout/activity_course_detail" >/>
     </activity>
+    <activity
+        android:id="@+id/cameraDecActivity"
+        android:name="com.example.zhaoying_v13.ui.home.cameraDec.CameraDecActivity"
+        android:label="CameraDecActivity" />
 </navigation>

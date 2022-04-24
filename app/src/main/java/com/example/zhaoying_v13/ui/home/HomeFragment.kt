@@ -41,9 +41,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun init() {
-        binding.imageButton1.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_detectionActivity)
-        )
+        binding.igbtnDetection.setOnClickListener{
+            requireView().findNavController().navigate(R.id.action_navigation_home_to_detectionActivity)
+        }
+        binding.igbtnTakeAction.setOnClickListener {
+            requireView().findNavController().navigate(R.id.action_navigation_home_to_cameraDecActivity)
+        }
         //太极图片点击
         binding.imageView7.setOnClickListener {
             startActivity(
@@ -55,9 +58,6 @@ class HomeFragment : Fragment() {
 
     private fun developing() {
         binding.imageButton2.setOnClickListener {
-            Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
-        }
-        binding.imageButton3.setOnClickListener {
             Toast.makeText(requireContext(), "抱歉，该功能暂未开放", Toast.LENGTH_SHORT).show()
         }
         binding.imageButton4.setOnClickListener {
