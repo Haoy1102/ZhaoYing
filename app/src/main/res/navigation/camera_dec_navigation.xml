@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/camera_dec_navigation"
+    app:startDestination="@id/cameraDecFragment">
+
+    <fragment
+        android:id="@+id/cameraDecFragment"
+        android:name="com.example.zhaoying_v13.ui.home.ui.camaraDec.CameraDecFragment"
+        android:label="report_fragment"
+        tools:layout="@layout/fragment_camare_dec" />
+
+</navigation>
