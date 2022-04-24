@@ -41,6 +41,8 @@ class ReportFragment : Fragment() {
             binding.tvReportDetail.setText(arguments?.getString("evaluate"))
             val videoURL=arguments?.getString("url")!!
             binding.webView.loadUrl(ReportApi.baseURL+"media/"+videoURL)
+
+
             Log.i("TAGURL",ReportApi.baseURL+"media/"+videoURL)
         }
 
@@ -52,6 +54,20 @@ class ReportFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
 
+        binding.btnVideoTrans.setOnClickListener {
+            if(binding.btnVideoTrans.text.toString()=="查看标准视频"){
+                binding.btnVideoTrans.setText("查看分析视频")
+                binding.webView.loadUrl(ReportApi.baseURL+"media/"+requireArguments().getString("criterion"))
+                return@setOnClickListener
+            }
+            if (binding.btnVideoTrans.text.toString()=="查看分析视频"){
+                binding.btnVideoTrans.setText("查看标准视频")
+                val videoURL=arguments?.getString("url")!!
+                binding.webView.loadUrl(ReportApi.baseURL+"media/"+videoURL)
+                return@setOnClickListener
+            }
+
+        }
     }
 
 

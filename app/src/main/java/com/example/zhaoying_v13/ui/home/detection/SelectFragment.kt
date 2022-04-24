@@ -136,6 +136,7 @@ class SelectFragment : Fragment() {
                         args.putInt("enterFrom", 0)
                         args.putString("evaluate", it.evaluate)
                         args.putString("url", it.url)
+                        args.putString("criterion", it.criterion)
                         requireView().findNavController()
                             .navigate(R.id.action_selectFragment_to_reportFragment, args)
                         Toast.makeText(context, "结果分析成功", Toast.LENGTH_SHORT).show()
