@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 //192.168.109.247
 
 
-private const val BASE_URL = "http://202.196.117.145:8000/"
+private const val BASE_URL = "http://35.192.65.232:8000/"
 
 
 private val moshi = Moshi.Builder()
@@ -32,7 +32,7 @@ private val moshi = Moshi.Builder()
     .build()
 val httpClient = OkHttpClient.Builder()
     .callTimeout(2, TimeUnit.MINUTES)
-    .connectTimeout(2, TimeUnit.SECONDS)
+    .connectTimeout(5, TimeUnit.SECONDS)
     .readTimeout(120, TimeUnit.SECONDS)
     .writeTimeout(120, TimeUnit.SECONDS)
 
