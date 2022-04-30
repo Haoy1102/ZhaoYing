@@ -14,19 +14,10 @@
             app:destination="@id/reportFragment"
             app:popUpTo="@id/selectFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_selectFragment_to_sectionCheckFragment"
-            app:destination="@id/sectionCheckFragment"
-            app:popUpTo="@id/selectFragment" />
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
         android:name="com.example.zhaoying_v13.ui.home.detection.ReportFragment"
         android:label="report_fragment"
         tools:layout="@layout/report_fragment" />
-    <fragment
-        android:id="@+id/sectionCheckFragment"
-        android:name="com.example.zhaoying_v13.ui.home.detection.sectionCheckFragment"
-        android:label="section_check_fragment"
-        tools:layout="@layout/section_check_fragment" />
 </navigation>

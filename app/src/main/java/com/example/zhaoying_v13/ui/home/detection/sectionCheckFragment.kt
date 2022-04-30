@@ -62,7 +62,7 @@ class sectionCheckFragment : Fragment() {
 
 }
 
-private class CardViewAdapter internal constructor(
+internal class CardViewAdapter internal constructor(
     private val context: Context,
     memberList: List<String>
 ) :

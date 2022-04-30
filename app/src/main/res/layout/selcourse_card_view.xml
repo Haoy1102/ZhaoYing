@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/selcourse_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/permission_dp_10"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/material_on_surface_stroke"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:id="@+id/selcourse_card_view_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/ic_example4">
+
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

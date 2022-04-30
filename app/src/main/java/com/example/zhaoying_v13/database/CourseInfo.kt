@@ -3,6 +3,8 @@ package com.example.zhaoying_v13.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.zhaoying_v13.R
+import java.net.URI
 
 @Entity(tableName="local_course_info_table")
 data class CourseInfo (
@@ -33,5 +35,8 @@ data class CourseInfo (
             "第六课时：手挥琵琶\n"+
             "第七课时：左右倒卷肱\n"+
             "第八课时：单鞭\n"+
-            "第九课时：云手\n"
+            "第九课时：云手\n",
+
+    @ColumnInfo(name="imgsrc")
+    val imgsrc:Int?= R.drawable.ic_example4
         )

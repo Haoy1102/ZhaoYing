@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -13,18 +14,20 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
+import com.example.zhaoying_v13.ui.home.cameraDec.CameraDecActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
+
 
 class SelectFragment : Fragment() {
 
@@ -38,6 +41,7 @@ class SelectFragment : Fragment() {
 
     companion object {
         fun newInstance() = SelectFragment()
+        const val REQUEST_VIDEO_CAPTURE = 2
     }
 
     override fun onCreateView(
@@ -47,6 +51,7 @@ class SelectFragment : Fragment() {
         _binding = SelectFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +62,7 @@ class SelectFragment : Fragment() {
         val viewModelFactory = SelectViewModelFactory(dataSource, application)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(SelectViewModel::class.java)
+
 
 
         initCourseMenu()
@@ -77,10 +83,23 @@ class SelectFragment : Fragment() {
         binding.btnToResult.setOnClickListener {
             predictReport()
         }
-        binding.btnTest.setOnClickListener {
-            view.findNavController().navigate(R.id.action_selectFragment_to_sectionCheckFragment)
+        binding.btnSelectFile.setOnClickListener {
+            selectFile()
+        }
+        binding.btnCameraCap.setOnClickListener {
+            Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+                takeVideoIntent.resolveActivity(requireActivity().packageManager)?.also {
+                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+                }
+            }
         }
 
+    }
+
+
+
+    interface testDataCallback {
+        fun cameraCapture()
     }
 
     private fun uploadFile() {
@@ -101,7 +120,7 @@ class SelectFragment : Fragment() {
                         Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show()
                         binding.btnUploadFile.visibility = View.INVISIBLE
                         binding.btnToResult.visibility = View.VISIBLE
-                        binding.tvUploadFinish.visibility=View.VISIBLE
+                        binding.tvUploadFinish.visibility = View.VISIBLE
                         return@Observer
                     }
                     if (it == "408") {
@@ -150,11 +169,11 @@ class SelectFragment : Fragment() {
                         Toast.makeText(context, "网络错误，请检查网络连接", Toast.LENGTH_SHORT).show()
                     }
                 })
-
             }
             .setPositiveButton("取消", null)
             .show()
     }
+
 
     private fun selectFile() {
         AndPermission.with(this@SelectFragment)
@@ -219,6 +238,35 @@ class SelectFragment : Fragment() {
             imageState = 1
             c.close()
         }
+
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            val videoUri: Uri? = data?.data
+            Log.i("TAGCamera", videoUri.toString())
+            imagePath=getFilePathByUri(videoUri)
+            binding.tvFileName.setText(imagePath)
+            imageState = 1
+
+        }
+
+    }
+
+    fun getFilePathByUri(uri: Uri?): String {
+        val selectedImage = uri
+        val filePathColumns = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor =
+            selectedImage?.let {
+                requireActivity().contentResolver.query(
+                    it,
+                    filePathColumns,
+                    null,
+                    null,
+                    null
+                )
+            }!!
+        c.moveToFirst()
+        val columnIndex = c.getColumnIndex(filePathColumns[0])
+        val imagePath = c.getString(columnIndex)
+        return imagePath
     }
 
 

@@ -65,13 +65,13 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:text="开始上传"
-        android:textSize="18sp"
         android:paddingTop="14sp"
         android:paddingBottom="14sp"
+        android:text="开始上传"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvfield_fileName" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_selectFile" />
 
     <Button
         android:id="@+id/btn_toResult"
@@ -81,30 +81,65 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:text="查看结果"
-        android:visibility="invisible"
-        android:textSize="18sp"
         android:paddingTop="14sp"
         android:paddingBottom="14sp"
+        android:text="查看结果"
+        android:textSize="18sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvfield_fileName" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_selectFile" />
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_test"-->
+<!--        style="@style/Widget.Material3.Button"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:paddingTop="14sp"-->
+<!--        android:paddingBottom="14sp"-->
+<!--        android:text="测试"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btn_toResult" />-->
 
     <Button
-        android:id="@+id/btn_test"
+        android:id="@+id/btn_selectFile"
         style="@style/Widget.Material3.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="测试"
-        android:textSize="18sp"
+        android:layout_marginEnd="8dp"
         android:paddingTop="14sp"
         android:paddingBottom="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="从本地选择"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cameraCap"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_toResult" />
+        app:layout_constraintTop_toBottomOf="@+id/tvfield_fileName" />
+
+    <Button
+        android:id="@+id/btn_cameraCap"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:paddingTop="14sp"
+        android:paddingBottom="14sp"
+        android:text="现在拍摄"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_selectFile"
+        app:layout_constraintTop_toBottomOf="@+id/tvfield_fileName" />
+
 
     <TextView
         android:id="@+id/tv_uploadFinish"

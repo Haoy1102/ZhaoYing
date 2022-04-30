@@ -12,9 +12,10 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.zhaoying_v13.databinding.ActivityCameraDecBinding
+import com.example.zhaoying_v13.ui.home.detection.SelectFragment
 
 
-class CameraDecActivity : AppCompatActivity() {
+class CameraDecActivity : AppCompatActivity(), SelectFragment.testDataCallback  {
 
     companion object {
         const val REQUEST_VIDEO_CAPTURE = 1
@@ -32,10 +33,6 @@ class CameraDecActivity : AppCompatActivity() {
     }
 
     private fun dispatchTakeVideoIntent() {
-
-
-
-
         val values = ContentValues()
         values.put(MediaStore.Video.Media.TITLE, "MyVideo")
         values.put(
@@ -66,7 +63,6 @@ class CameraDecActivity : AppCompatActivity() {
             Log.i("TAGCamera", videoUri.toString())
             binding.videoView.setVideoURI(videoUri)
             Log.i("TAGCamera", getFilePathByUri(videoUri)!!)
-
             binding.videoView.start()
         }
     }
@@ -88,6 +84,10 @@ class CameraDecActivity : AppCompatActivity() {
         val columnIndex = c.getColumnIndex(filePathColumns[0])
         val imagePath = c.getString(columnIndex)
         return imagePath
+    }
+
+    override fun cameraCapture() {
+        dispatchTakeVideoIntent()
     }
 
 

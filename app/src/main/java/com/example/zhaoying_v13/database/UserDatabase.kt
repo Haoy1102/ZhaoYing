@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 //每次更改框架必须修改版本号，否则程序不工作
 @Database(entities = [UserInfo::class,CourseInfo::class,User2Course::class],
-    version = 11,  exportSchema = false)
+    version = 12,  exportSchema = false)
 abstract class UserDatabase : RoomDatabase() {
 
     abstract val userDatabaseDao: UserDatabaseDao
