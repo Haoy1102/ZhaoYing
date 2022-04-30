@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
@@ -75,6 +76,9 @@ class SelectFragment : Fragment() {
 
         binding.btnToResult.setOnClickListener {
             predictReport()
+        }
+        binding.btnTest.setOnClickListener {
+            view.findNavController().navigate(R.id.action_selectFragment_to_sectionCheckFragment)
         }
 
     }

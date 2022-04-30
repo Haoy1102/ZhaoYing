@@ -68,31 +68,6 @@ class CameraDecActivity : AppCompatActivity() {
             Log.i("TAGCamera", getFilePathByUri(videoUri)!!)
 
             binding.videoView.start()
-
-//            Log.i("TAGCamera", intent.data.toString())
-//
-//            val selectedImage = intent.data
-//            val filePathColumns = arrayOf(MediaStore.Images.Media.DATA)
-//            val c: Cursor =
-//                selectedImage?.let {
-//                    this.contentResolver.query(
-//                        it,
-//                        filePathColumns,
-//                        null,
-//                        null,
-//                        null
-//                    )
-//                }!!
-//            c.moveToFirst()
-//            val columnIndex = c.getColumnIndex(filePathColumns[0])
-//            imageUri = Uri.fromFile()c.getString(columnIndex)
-//
-//            imageUri=MediaStore.Video.Media.getContentUri(imageUri.toString())
-
-
-
-//            Log.i("TAGCamera", imageUri.toString())
-//            binding.videoView.setVideoURI(imageUri)
         }
     }
 
