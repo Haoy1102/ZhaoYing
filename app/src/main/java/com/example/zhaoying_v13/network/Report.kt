@@ -6,6 +6,7 @@ data class Report(
     val status: String,
     val evaluate: String? = null,
     val url: String? = null,
-    val criterion:String?=null
+    val criterion:String?=null,
+    val score:String?=null
 )
 

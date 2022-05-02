@@ -160,6 +160,7 @@ class SelectFragment : Fragment() {
                         args.putString("evaluate", it.evaluate)
                         args.putString("url", it.url)
                         args.putString("criterion", it.criterion)
+                        args.putString("score",it.score)
                         requireView().findNavController()
                             .navigate(R.id.action_selectFragment_to_reportFragment, args)
                         Toast.makeText(context, "结果分析成功", Toast.LENGTH_SHORT).show()

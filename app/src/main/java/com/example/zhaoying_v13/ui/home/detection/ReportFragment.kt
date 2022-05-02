@@ -39,6 +39,7 @@ class ReportFragment : Fragment() {
         }
         if (enterFrom==0) {
             binding.tvReportDetail.setText(arguments?.getString("evaluate"))
+            binding.tvScore.setText(arguments?.getString("score"+"分"))
             val videoURL=arguments?.getString("url")!!
             binding.webView.loadUrl(ReportApi.baseURL+"media/"+videoURL)
 
