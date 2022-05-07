@@ -41,13 +41,7 @@ class CameraDecActivity : AppCompatActivity(), SelectFragment.testDataCallback  
         )
         imageUri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
 
-//        Intent(MediaStore.ACTION_VIDEO_CAPTURE).
-//        putExtra(MediaStore.EXTRA_OUTPUT, imageUri).also { takeVideoIntent ->
-//            takeVideoIntent.resolveActivity(packageManager)?.also {
-//                startActivityForResult(takeVideoIntent, Companion.REQUEST_VIDEO_CAPTURE)
-//
-//            }
-//        }
+
         Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
             takeVideoIntent.resolveActivity(packageManager)?.also {
                 startActivityForResult(takeVideoIntent, Companion.REQUEST_VIDEO_CAPTURE)

@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -35,6 +38,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.myInfo.login.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.cameraX.CameraXActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

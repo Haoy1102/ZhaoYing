@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.databinding.FragmentHomeBinding
+import com.example.zhaoying_v13.ui.home.cameraX.CameraXActivity
 
 class HomeFragment : Fragment() {
 
@@ -45,7 +46,9 @@ class HomeFragment : Fragment() {
             requireView().findNavController().navigate(R.id.action_navigation_home_to_detectionActivity)
         }
         binding.igbtnTakeAction.setOnClickListener {
-            requireView().findNavController().navigate(R.id.action_navigation_home_to_cameraDecActivity)
+//            requireView().findNavController().navigate(R.id.action_navigation_home_to_cameraDecActivity)
+
+            startActivity(Intent(context, CameraXActivity::class.java))
         }
         //太极图片点击
         binding.imageView7.setOnClickListener {
