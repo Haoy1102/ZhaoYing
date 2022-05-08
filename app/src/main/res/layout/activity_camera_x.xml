@@ -39,6 +39,18 @@
             app:delayMilliseconds="40"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/opendect"
+            app:maxSeconds="10" />
+
+        <Button
+            android:id="@+id/opendect"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="20dp"
+            android:text="实时监测"
+            android:background="@drawable/round_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/iv_camera1"
             app:layout_constraintRight_toRightOf="parent"
             app:maxSeconds="10" />
     </androidx.constraintlayout.widget.ConstraintLayout>
