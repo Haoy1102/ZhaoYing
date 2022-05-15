@@ -260,6 +260,6 @@ class Draw(context: Context?, var pose: Pose) : View(context) {
 
     @RequiresApi(Build.VERSION_CODES.R)
     fun translateX(x: Float): Float {
-        return x+100;
+        return x;
     }
 }
