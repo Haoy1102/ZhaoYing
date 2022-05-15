@@ -1,5 +1,6 @@
 package com.example.zhaoying_v13.ui.home.cameraX
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -10,6 +11,7 @@ import androidx.annotation.RequiresApi
 import com.google.mlkit.vision.pose.Pose
 import com.google.mlkit.vision.pose.PoseLandmark
 
+@SuppressLint("ViewConstructor")
 class Draw(context: Context?, var pose: Pose) : View(context) {
     lateinit var boundaryPaint: Paint
     lateinit var leftPaint: Paint
@@ -27,10 +29,10 @@ class Draw(context: Context?, var pose: Pose) : View(context) {
 
         leftPaint = Paint()
         leftPaint.strokeWidth = 10f
-        leftPaint.color = Color.GREEN
+        leftPaint.color = Color.CYAN
         rightPaint = Paint()
         rightPaint.strokeWidth = 10f
-        rightPaint.color = Color.YELLOW
+        rightPaint.color = Color.BLUE
 
 
     }
@@ -258,10 +260,6 @@ class Draw(context: Context?, var pose: Pose) : View(context) {
 
     @RequiresApi(Build.VERSION_CODES.R)
     fun translateX(x: Float): Float {
-
-        // you will need this for the inverted image in case of using front camera
-        // return context.display?.width?.minus(x)!!
-
-        return x;
+        return x+100;
     }
 }

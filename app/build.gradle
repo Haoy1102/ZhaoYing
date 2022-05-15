@@ -104,5 +104,8 @@ dependencies {
     // MLKit
     // If you want to use the base sdk
     implementation 'com.google.mlkit:pose-detection:18.0.0-beta2'
+    // mlkit accurate edition
+    implementation 'com.google.mlkit:pose-detection-accurate:18.0.0-beta2'
+
 
 }
