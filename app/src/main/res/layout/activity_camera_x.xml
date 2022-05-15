@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,9 +14,7 @@
         <androidx.camera.view.PreviewView
             android:id="@+id/preview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.camera.view.PreviewView>
+            android:layout_height="match_parent" />
 
 
         <ImageView
@@ -47,12 +45,12 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="20dp"
-            android:text="实时监测"
             android:background="@drawable/round_button"
+            android:text="实时监测"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/iv_camera1"
             app:layout_constraintRight_toRightOf="parent"
             app:maxSeconds="10" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</RelativeLayout>

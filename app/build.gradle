@@ -40,7 +40,7 @@ android {
 dependencies {
 
     implementation project(':lib_permission')
-    implementation("com.android.support:appcompat-v7:23.2.0")
+    implementation('androidx.appcompat:appcompat:1.0.0')
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
@@ -100,5 +100,12 @@ dependencies {
     implementation "androidx.camera:camera-view:1.0.0-alpha20"
     // If you want to additionally use the CameraX Extensions library
     implementation "androidx.camera:camera-extensions:1.0.0-alpha20"
+
+    // MLKit
+    // If you want to use the base sdk
+    implementation 'com.google.mlkit:pose-detection:18.0.0-beta2'
+    // mlkit accurate edition
+    implementation 'com.google.mlkit:pose-detection-accurate:18.0.0-beta2'
+
 
 }
