@@ -1,24 +1,22 @@
-package com.example.zhaoying_v13.ui.home.cameraX;
+package com.example.zhaoying_v13.ui.home.cameraX
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 
-public class CustomLifecycle implements LifecycleOwner {
-    private LifecycleRegistry mLifecycleRegistry = null;
+class CustomLifecycle : LifecycleOwner {
+    private var mLifecycleRegistry: LifecycleRegistry? = null
+    fun doOnResume() {
+        mLifecycleRegistry!!.currentState = Lifecycle.State.RESUMED
+    }
 
-    public CustomLifecycle() {
-        mLifecycleRegistry = new LifecycleRegistry(this);
+    override fun getLifecycle(): Lifecycle {
+        return mLifecycleRegistry!!
+    }
+
+    init {
+        mLifecycleRegistry = LifecycleRegistry(this)
         //markState已经弃用了
-        mLifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
-    }
-    public void doOnResume(){
-        mLifecycleRegistry.setCurrentState(Lifecycle.State.RESUMED);
-    }
-    @NonNull
-    @Override
-    public Lifecycle getLifecycle() {
-        return mLifecycleRegistry;
+        mLifecycleRegistry!!.currentState = Lifecycle.State.CREATED
     }
 }
