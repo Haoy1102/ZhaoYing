@@ -54,7 +54,7 @@ class CameraXActivity : AppCompatActivity() {
             if (btnFlag == 0){
                 val file = File(
                     Environment.getExternalStorageDirectory()
-                        .toString() + File.separator + "DCIM/Camera",
+                        .toString() + File.separator + "Download",
                     "${System.currentTimeMillis()}.mp4"
                 )
                 filepath = file.path
