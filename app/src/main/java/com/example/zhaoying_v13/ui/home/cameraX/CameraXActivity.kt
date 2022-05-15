@@ -1,31 +1,31 @@
 package com.example.zhaoying_v13.ui.home.cameraX
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.graphics.Point
 import android.os.Bundle
 import android.os.Environment
-import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.core.VideoCapture
+import androidx.camera.core.*
+import androidx.camera.core.AspectRatio.RATIO_16_9
+import androidx.camera.core.impl.ImageAnalysisConfig
+import androidx.camera.core.impl.PreviewConfig
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.zhaoying_v13.databinding.ActivityCameraxBinding
-import com.google.android.material.tabs.TabLayout
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions
-import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
 import java.io.File
+
 
 class CameraXActivity : AppCompatActivity() {
     private lateinit var poseDetector: PoseDetector
@@ -98,7 +98,10 @@ class CameraXActivity : AppCompatActivity() {
 
     }
 
-    @SuppressLint("RestrictedApi", "UnsafeExperimentalUsageError", "NewApi")
+    @SuppressLint(
+        "RestrictedApi", "UnsafeExperimentalUsageError", "NewApi",
+        "UnsafeOptInUsageError"
+    )
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
 
         Log.d("Check:", "inside bind preview")
@@ -107,6 +110,8 @@ class CameraXActivity : AppCompatActivity() {
         val preview = Preview.Builder().build()
 
         preview.setSurfaceProvider(binding.previewView.surfaceProvider)
+        binding.previewView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
 
         val cameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
@@ -114,55 +119,53 @@ class CameraXActivity : AppCompatActivity() {
         val point = Point()
 
         videoCapture = VideoCapture.Builder()
-            .setTargetResolution(Size(point.x,point.y))
+            .setTargetResolution(Size(point.x, point.y))
             .build()
-
 
         val imageAnalysis = ImageAnalysis.Builder()
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .setTargetResolution(Size(point.x,point.y))
+            .setTargetResolution(Size(1080, 1920))
             .build()
 
 
+
+
         imageAnalysis.setAnalyzer(
-            ContextCompat.getMainExecutor(this),
-            ImageAnalysis.Analyzer { imageProxy ->
+            ContextCompat.getMainExecutor(this)
+        ) { imageProxy ->
+            val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+            val image = imageProxy.image
 
-                val rotationDegrees = imageProxy.imageInfo.rotationDegrees
-                val image = imageProxy.image
 
-                if (image != null) {
+            if (image != null) {
 
-                    val processImage = InputImage.fromMediaImage(image, rotationDegrees)
+                val processImage = InputImage.fromMediaImage(image, rotationDegrees)
+//                    Log.e("ERR", String.format("width=%d, height=%d", processImage.width, processImage.height))
+                poseDetector.process(processImage)
+                    .addOnSuccessListener {
 
-                    poseDetector.process(processImage)
-                        .addOnSuccessListener {
+                        if (binding.parentLayout.childCount > 3) {
+                            binding.parentLayout.removeViewAt(3)
+                        }
+                        if (it.allPoseLandmarks.isNotEmpty()) {
 
                             if (binding.parentLayout.childCount > 3) {
                                 binding.parentLayout.removeViewAt(3)
                             }
-                            if (it.allPoseLandmarks.isNotEmpty()) {
 
-                                if (binding.parentLayout.childCount > 3) {
-                                    binding.parentLayout.removeViewAt(3)
-                                }
-                                Log.e(
-                                    "DEBUG",
-                                    it.getPoseLandmark(PoseLandmark.LEFT_ANKLE).toString()
-                                )
-                                val element = Draw(applicationContext, it)
-                                binding.parentLayout.addView(element)
-                            }
+                            val element = Draw(applicationContext, it)
+                            binding.parentLayout.addView(element)
                         }
-                        .addOnFailureListener {
-                            imageProxy.close()
-                        }.addOnCompleteListener {
-                            imageProxy.close()
-                        }
-                }
+                    }
+                    .addOnFailureListener {
+                        imageProxy.close()
+                    }.addOnCompleteListener {
+                        imageProxy.close()
+                    }
+            }
 
 
-            })
+        }
 
         cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis, preview, videoCapture)
 
