@@ -22,7 +22,9 @@ import androidx.navigation.findNavController
 import com.example.zhaoying_v13.R
 import com.example.zhaoying_v13.database.UserDatabase
 import com.example.zhaoying_v13.databinding.SelectFragmentBinding
+import com.example.zhaoying_v13.ui.home.CourseDetailActivity
 import com.example.zhaoying_v13.ui.home.cameraDec.CameraDecActivity
+import com.example.zhaoying_v13.ui.home.cameraX.CameraXActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
@@ -87,11 +89,13 @@ class SelectFragment : Fragment() {
             selectFile()
         }
         binding.btnCameraCap.setOnClickListener {
-            Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
-                takeVideoIntent.resolveActivity(requireActivity().packageManager)?.also {
-                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
-                }
-            }
+//            Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+//                takeVideoIntent.resolveActivity(requireActivity().packageManager)?.also {
+//                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+//                }
+//            }
+            val intent=Intent(context, CameraXActivity::class.java)
+            startActivityForResult(intent,REQUEST_VIDEO_CAPTURE)
         }
 
     }
@@ -241,12 +245,15 @@ class SelectFragment : Fragment() {
         }
 
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
-            val videoUri: Uri? = data?.data
-            Log.i("TAGCamera", videoUri.toString())
-            imagePath=getFilePathByUri(videoUri)
+//            val videoUri: Uri? = data?.data
+//            Log.i("TAGCamera", videoUri.toString())
+//            imagePath=getFilePathByUri(videoUri)
+//            binding.tvFileName.setText(imagePath)
+//            imageState = 1
+            imagePath=data?.getStringExtra("filePath")!!
             binding.tvFileName.setText(imagePath)
+            Log.i("TAG", imagePath)
             imageState = 1
-
         }
 
     }

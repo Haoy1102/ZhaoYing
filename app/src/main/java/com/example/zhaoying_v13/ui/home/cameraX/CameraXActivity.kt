@@ -2,6 +2,7 @@ package com.example.zhaoying_v13.ui.home.cameraX
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
 import android.os.Environment
@@ -28,170 +29,179 @@ import java.io.File
 
 
 class CameraXActivity : AppCompatActivity() {
-	private lateinit var poseDetector: PoseDetector
-	private lateinit var videoCapture: VideoCapture
-	private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
-	private lateinit var btnStart: Button
-	private lateinit var btnStop: Button
-	private lateinit var binding: ActivityCameraXBinding
-	private lateinit var filepath: String
-	private var mPermissionGranted = 0
+    private lateinit var poseDetector: PoseDetector
+    private lateinit var videoCapture: VideoCapture
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private lateinit var btnStart: Button
+    private lateinit var btnStop: Button
+    private lateinit var binding: ActivityCameraXBinding
+    private lateinit var filepath: String
+    private var btnFlag: Int = 0
+    private var mPermissionGranted = 0
 
-	@SuppressLint("MissingPermission", "RestrictedApi", "UnsafeExperimentalUsageError")
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		binding = ActivityCameraXBinding.inflate(layoutInflater)
-		setContentView(binding.root)
+    @SuppressLint("MissingPermission", "RestrictedApi", "UnsafeExperimentalUsageError")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityCameraXBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-		requestPermission()
+        requestPermission()
 
-		btnStart = binding.btnStart
-		btnStop = binding.btnStop
+//		btnStart = binding.btnStart
+//		btnStop = binding.btnStop
 
-		btnStart.setOnClickListener {
-			val file = File(
-				Environment.getExternalStorageDirectory()
-					.toString() + File.separator + "DCIM/Camera",
-				"${System.currentTimeMillis()}.mp4"
-			)
-			filepath = file.path
-
-			val outputFileOptions = VideoCapture.OutputFileOptions.Builder(file).build()
-
-
-			videoCapture.startRecording(
-				outputFileOptions,
-				ContextCompat.getMainExecutor(this),
-				object : VideoCapture.OnVideoSavedCallback {
-					override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
-						Log.d("Check:", "On Video Saved")
-					}
-
-					override fun onError(
-						videoCaptureError: Int,
-						message: String,
-						cause: Throwable?
-					) {
-						Log.d("Check:", "On Video Error" + message)
-					}
-				}
-			)
-		}
-
-		btnStop.setOnClickListener {
-			Toast.makeText(this, String.format("video is save at %s", filepath), Toast.LENGTH_LONG)
-				.show()
-			videoCapture.stopRecording()
-		}
-
-		cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-		cameraProviderFuture.addListener(Runnable {
-			val cameraProvider = cameraProviderFuture.get()
-			bindPreview(cameraProvider)
-
-		}, ContextCompat.getMainExecutor(this))
-
-		val options = AccuratePoseDetectorOptions.Builder()
-			.setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE)
-			.build()
+        binding.opendect.setOnClickListener {
+            if (btnFlag == 0){
+                val file = File(
+                    Environment.getExternalStorageDirectory()
+                        .toString() + File.separator + "DCIM/Camera",
+                    "${System.currentTimeMillis()}.mp4"
+                )
+                filepath = file.path
+                btnFlag=1
+                binding.opendect.text="结束"
+                val outputFileOptions = VideoCapture.OutputFileOptions.Builder(file).build()
 
 
-		poseDetector = PoseDetection.getClient(options)
+                videoCapture.startRecording(
+                    outputFileOptions,
+                    ContextCompat.getMainExecutor(this),
+                    object : VideoCapture.OnVideoSavedCallback {
+                        override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
+                            Log.d("Check:", "On Video Saved")
+                        }
+
+                        override fun onError(
+                            videoCaptureError: Int,
+                            message: String,
+                            cause: Throwable?
+                        ) {
+                            Log.d("Check:", "On Video Error" + message)
+                        }
+                    }
+                )
+            }
+            else if (btnFlag==1){
+                Toast.makeText(this, String.format("video is save at %s", filepath), Toast.LENGTH_LONG).show()
+                videoCapture.stopRecording()
+                val intent= Intent()
+                intent.putExtra("filePath",filepath)
+                setResult(RESULT_OK,intent)
+                finish()
+            }
+        }
+
+//        btnStop.setOnClickListener {
+//
+//        }
+
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener(Runnable {
+            val cameraProvider = cameraProviderFuture.get()
+            bindPreview(cameraProvider)
+        }, ContextCompat.getMainExecutor(this))
+
+        val options = AccuratePoseDetectorOptions.Builder()
+            .setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE)
+            .build()
 
 
-	}
-
-	@SuppressLint(
-		"RestrictedApi", "UnsafeExperimentalUsageError", "NewApi",
-		"UnsafeOptInUsageError"
-	)
-	private fun bindPreview(cameraProvider: ProcessCameraProvider) {
-
-		Log.d("Check:", "inside bind preview")
+        poseDetector = PoseDetection.getClient(options)
 
 
-		val preview = Preview.Builder().build()
+    }
 
-		preview.setSurfaceProvider(binding.previewView.surfaceProvider)
-		binding.previewView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+    @SuppressLint(
+        "RestrictedApi", "UnsafeExperimentalUsageError", "NewApi",
+        "UnsafeOptInUsageError"
+    )
+    private fun bindPreview(cameraProvider: ProcessCameraProvider) {
 
-
-		val cameraSelector = CameraSelector.Builder()
-			.requireLensFacing(CameraSelector.LENS_FACING_BACK)
-			.build()
-		val point = Point()
-
-		videoCapture = VideoCapture.Builder()
-			.setTargetResolution(Size(point.x, point.y))
-			.build()
-
-		val imageAnalysis = ImageAnalysis.Builder()
-			.setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-			.setTargetResolution(Size(1080, 1920))
-			.build()
+        Log.d("Check:", "inside bind preview")
 
 
+        val preview = Preview.Builder().build()
+
+        preview.setSurfaceProvider(binding.previewView.surfaceProvider)
+        binding.previewView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
 
-		imageAnalysis.setAnalyzer(
-			ContextCompat.getMainExecutor(this)
-		) { imageProxy ->
-			val rotationDegrees = imageProxy.imageInfo.rotationDegrees
-			val image = imageProxy.image
+        val cameraSelector = CameraSelector.Builder()
+            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+            .build()
+        val point = Point()
+
+        videoCapture = VideoCapture.Builder()
+            .setTargetResolution(Size(point.x, point.y))
+            .build()
+
+        val imageAnalysis = ImageAnalysis.Builder()
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .setTargetResolution(Size(1080, 1920))
+            .build()
 
 
-			if (image != null) {
 
-				val processImage = InputImage.fromMediaImage(image, rotationDegrees)
+
+        imageAnalysis.setAnalyzer(
+            ContextCompat.getMainExecutor(this)
+        ) { imageProxy ->
+            val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+            val image = imageProxy.image
+
+
+            if (image != null) {
+
+                val processImage = InputImage.fromMediaImage(image, rotationDegrees)
 //                    Log.e("ERR", String.format("width=%d, height=%d", processImage.width, processImage.height))
-				poseDetector.process(processImage)
-					.addOnSuccessListener {
+                poseDetector.process(processImage)
+                    .addOnSuccessListener {
 
-						if (binding.parentLayout.childCount > 3) {
-							binding.parentLayout.removeViewAt(3)
-						}
-						if (it.allPoseLandmarks.isNotEmpty()) {
+                        if (binding.parentLayout.childCount > 3) {
+                            binding.parentLayout.removeViewAt(3)
+                        }
+                        if (it.allPoseLandmarks.isNotEmpty()) {
 
-							if (binding.parentLayout.childCount > 3) {
-								binding.parentLayout.removeViewAt(3)
-							}
+                            if (binding.parentLayout.childCount > 3) {
+                                binding.parentLayout.removeViewAt(3)
+                            }
 
-							val element = Draw(applicationContext, it)
-							binding.parentLayout.addView(element)
-						}
-					}
-					.addOnFailureListener {
-						imageProxy.close()
-					}.addOnCompleteListener {
-						imageProxy.close()
-					}
-			}
+                            val element = Draw(applicationContext, it)
+                            binding.parentLayout.addView(element)
+                        }
+                    }
+                    .addOnFailureListener {
+                        imageProxy.close()
+                    }.addOnCompleteListener {
+                        imageProxy.close()
+                    }
+            }
 
 
-		}
+        }
 
-		cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis, preview, videoCapture)
+        cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis, preview, videoCapture)
 
-	}
+    }
 
-	private fun requestPermission() {
-		if (ContextCompat.checkSelfPermission(
-				this,
-				Manifest.permission.CAMERA
-			) != mPermissionGranted || ContextCompat.checkSelfPermission(
-				this,
-				Manifest.permission.WRITE_EXTERNAL_STORAGE
-			) != mPermissionGranted || ContextCompat.checkSelfPermission(
-				this,
-				Manifest.permission.RECORD_AUDIO
-			) != mPermissionGranted
-		) {
-			ActivityCompat.requestPermissions(
-				this, arrayOf(
-					Manifest.permission.CAMERA,
-					Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO
-				), 1
-			)
-		}
-	}
+    private fun requestPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != mPermissionGranted || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != mPermissionGranted || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != mPermissionGranted
+        ) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO
+                ), 1
+            )
+        }
+    }
 }
